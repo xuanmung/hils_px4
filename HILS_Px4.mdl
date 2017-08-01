@@ -5,29 +5,9 @@ Model {
   SavedCharacterEncoding  "windows-949"
   GraphicalInterface {
     NumRootInports	    0
-    NumRootOutports	    4
-    Outport {
-      Name		      "xOut"
-      BusObject		      ""
-      BusOutputAsStruct	      "off"
-    }
-    Outport {
-      Name		      "yOut"
-      BusObject		      ""
-      BusOutputAsStruct	      "off"
-    }
-    Outport {
-      Name		      "zOut"
-      BusObject		      ""
-      BusOutputAsStruct	      "off"
-    }
-    Outport {
-      Name		      "Out"
-      BusObject		      ""
-      BusOutputAsStruct	      "off"
-    }
+    NumRootOutports	    0
     ParameterArgumentNames  ""
-    ComputedModelVersion    "1.1682"
+    ComputedModelVersion    "1.1737"
     NumModelReferences	    0
     NumTestPointedSignals   0
   }
@@ -62,7 +42,7 @@ Model {
       $ObjectID		      3
       $ClassName	      "Simulink.WindowInfo"
       IsActive		      [1]
-      Location		      [-8.0, 0.0, 877.0, 744.0]
+      Location		      [-8.0, 0.0, 932.0, 744.0]
       Object {
 	$PropName		"ModelBrowserInfo"
 	$ObjectID		4
@@ -84,55 +64,55 @@ Model {
 	Dimension		6
 	Object {
 	  $ObjectID		  6
-	  IsActive		  [0]
+	  IsActive		  [1]
 	  ViewObjType		  "SimulinkTopLevel"
 	  LoadSaveID		  "0"
-	  Extents		  [827.0, 567.0]
-	  ZoomFactor		  [0.72380952380952368]
-	  Offset		  [154.2784940416991, -117.14511396479509]
+	  Extents		  [882.0, 567.0]
+	  ZoomFactor		  [0.90370370370370356]
+	  Offset		  [199.50819672131138, 17.790983606557347]
 	}
 	Object {
 	  $ObjectID		  7
 	  IsActive		  [0]
 	  ViewObjType		  "SimulinkSubsys"
 	  LoadSaveID		  "8577"
-	  Extents		  [827.0, 567.0]
-	  ZoomFactor		  [0.4]
-	  Offset		  [118.21697650121928, 213.088450007225]
+	  Extents		  [882.0, 567.0]
+	  ZoomFactor		  [0.8]
+	  Offset		  [337.7952391009548, 674.56807903117056]
 	}
 	Object {
 	  $ObjectID		  8
 	  IsActive		  [0]
 	  ViewObjType		  "SimulinkSubsys"
 	  LoadSaveID		  "9501"
-	  Extents		  [827.0, 567.0]
-	  ZoomFactor		  [1.1793357933579336]
-	  Offset		  [-189.37108886107626, -127.38954943679599]
+	  Extents		  [882.0, 567.0]
+	  ZoomFactor		  [0.99999999999999978]
+	  Offset		  [-230.35012290560505, -114.29192740926163]
 	}
 	Object {
 	  $ObjectID		  9
 	  IsActive		  [0]
 	  ViewObjType		  "SimulinkSubsys"
 	  LoadSaveID		  "10071"
-	  Extents		  [827.0, 567.0]
-	  ZoomFactor		  [1.2112359550561798]
-	  Offset		  [265.42567254174395, 92.441558441558442]
+	  Extents		  [882.0, 567.0]
+	  ZoomFactor		  [1.1924778761061947]
+	  Offset		  [236.99431818181819, 85.259740259740255]
 	}
 	Object {
 	  $ObjectID		  10
-	  IsActive		  [1]
+	  IsActive		  [0]
 	  ViewObjType		  "SimulinkSubsys"
 	  LoadSaveID		  "8567"
-	  Extents		  [827.0, 567.0]
+	  Extents		  [882.0, 567.0]
 	  ZoomFactor		  [0.8]
-	  Offset		  [757.05273854731854, 227.69155891323825]
+	  Offset		  [186.75451973541385, -56.503775645001042]
 	}
 	Object {
 	  $ObjectID		  11
 	  IsActive		  [0]
 	  ViewObjType		  "SimulinkSubsys"
 	  LoadSaveID		  "8614"
-	  Extents		  [827.0, 567.0]
+	  Extents		  [882.0, 567.0]
 	  ZoomFactor		  [1.0]
 	  Offset		  [194.36303254685583, 690.23888560653268]
 	}
@@ -146,9 +126,9 @@ Model {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "Xuan Mung"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Mon Jul 31 15:36:20 2017"
-  RTWModifiedTimeStamp	  423414679
-  ModelVersionFormat	  "1.%<AutoIncrement:1682>"
+  LastModifiedDate	  "Tue Aug 01 16:52:49 2017"
+  RTWModifiedTimeStamp	  423506719
+  ModelVersionFormat	  "1.%<AutoIncrement:1737>"
   ConfigurationManager	  "none"
   SampleTimeColors	  off
   SampleTimeAnnotations	  off
@@ -801,7 +781,7 @@ Model {
 	  StartTime		  "0.0"
 	  StopTime		  "inf"
 	  AbsTol		  "auto"
-	  FixedStep		  "0.001"
+	  FixedStep		  "0.01"
 	  InitialStep		  "auto"
 	  MaxNumMinSteps	  "-1"
 	  MaxOrder		  5
@@ -1005,12 +985,6 @@ Model {
 	Simulink.HardwareCC {
 	  $ObjectID		  31
 	  Version		  "1.15.1"
-	  Array {
-	    Type		    "Cell"
-	    Dimension		    1
-	    Cell		    "ProdHWDeviceType"
-	    PropName		    "DisabledProps"
-	  }
 	  ProdBitPerChar	  8
 	  ProdBitPerShort	  16
 	  ProdBitPerInt		  16
@@ -1445,7 +1419,7 @@ Model {
       }
       Name		      "Run on Hardware Configuration"
       CurrentDlgPage	      "Solver"
-      ConfigPrmDlgPosition     [ 196, 41, 1324, 795 ] 
+      ConfigPrmDlgPosition     [ 426, 130, 1494, 888 ] 
     }
     PropName		    "ConfigurationSets"
   }
@@ -1801,7 +1775,7 @@ Model {
   }
   System {
     Name		    "HILS_Px4"
-    Location		    [-8, 0, 869, 744]
+    Location		    [-8, 0, 924, 744]
     Open		    on
     ModelBrowserVisibility  off
     ModelBrowserWidth	    200
@@ -1813,25 +1787,9 @@ Model {
     TiledPaperMargins	    [1.270000, 1.270000, 1.270000, 1.270000]
     TiledPageScale	    1
     ShowPageBoundaries	    off
-    ZoomFactor		    "72"
+    ZoomFactor		    "90"
     ReportName		    "simulink-default.rpt"
-    SIDHighWatermark	    "10294"
-    Block {
-      BlockType		      Constant
-      Name		      "Constant1"
-      SID		      "10260"
-      Position		      [215, 220, 245, 240]
-      ZOrder		      3471
-      ShowName		      off
-    }
-    Block {
-      BlockType		      Constant
-      Name		      "Constant2"
-      SID		      "10272"
-      Position		      [530, 90, 560, 110]
-      ZOrder		      3472
-      ShowName		      off
-    }
+    SIDHighWatermark	    "10307"
     Block {
       BlockType		      SubSystem
       Name		      "Data_In"
@@ -1846,7 +1804,7 @@ Model {
       Variant		      off
       System {
 	Name			"Data_In"
-	Location		[-8, 0, 869, 744]
+	Location		[-8, 0, 924, 744]
 	Open			on
 	ModelBrowserVisibility	off
 	ModelBrowserWidth	200
@@ -1858,7 +1816,7 @@ Model {
 	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
 	TiledPageScale		1
 	ShowPageBoundaries	off
-	ZoomFactor		"121"
+	ZoomFactor		"119"
 	Block {
 	  BlockType		  Inport
 	  Name			  "Fz_in"
@@ -1922,6 +1880,22 @@ Model {
 	  IconDisplay		  "Port number"
 	}
 	Block {
+	  BlockType		  Abs
+	  Name			  "Abs"
+	  SID			  "10300"
+	  Position		  [535, 105, 565, 135]
+	  ZOrder		  3476
+	  SaturateOnIntegerOverflow off
+	}
+	Block {
+	  BlockType		  Constant
+	  Name			  "Constant"
+	  SID			  "10307"
+	  Position		  [670, 105, 700, 135]
+	  ZOrder		  3479
+	  Value			  "10"
+	}
+	Block {
 	  BlockType		  Mux
 	  Name			  "Mux"
 	  SID			  "10233"
@@ -1944,10 +1918,17 @@ Model {
 	  DisplayOption		  "bar"
 	}
 	Block {
+	  BlockType		  Terminator
+	  Name			  "Terminator"
+	  SID			  "10306"
+	  Position		  [585, 110, 605, 130]
+	  ZOrder		  3478
+	}
+	Block {
 	  BlockType		  Outport
 	  Name			  "Fz"
 	  SID			  "10206"
-	  Position		  [700, 113, 730, 127]
+	  Position		  [730, 113, 760, 127]
 	  ZOrder		  3471
 	  IconDisplay		  "Port number"
 	}
@@ -1981,13 +1962,6 @@ Model {
 	  SrcBlock		  "Mux1"
 	  SrcPort		  1
 	  DstBlock		  "omega"
-	  DstPort		  1
-	}
-	Line {
-	  ZOrder		  72
-	  SrcBlock		  "Fz_in"
-	  SrcPort		  1
-	  DstBlock		  "Fz"
 	  DstPort		  1
 	}
 	Line {
@@ -2032,6 +2006,27 @@ Model {
 	  DstBlock		  "Mux1"
 	  DstPort		  3
 	}
+	Line {
+	  ZOrder		  90
+	  SrcBlock		  "Fz_in"
+	  SrcPort		  1
+	  DstBlock		  "Abs"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  94
+	  SrcBlock		  "Constant"
+	  SrcPort		  1
+	  DstBlock		  "Fz"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  93
+	  SrcBlock		  "Abs"
+	  SrcPort		  1
+	  DstBlock		  "Terminator"
+	  DstPort		  1
+	}
       }
     }
     Block {
@@ -2048,7 +2043,7 @@ Model {
       Variant		      off
       System {
 	Name			"Data_Out"
-	Location		[-8, 0, 869, 744]
+	Location		[-8, 0, 924, 744]
 	Open			off
 	ModelBrowserVisibility	off
 	ModelBrowserWidth	200
@@ -2060,7 +2055,7 @@ Model {
 	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
 	TiledPageScale		1
 	ShowPageBoundaries	off
-	ZoomFactor		"438"
+	ZoomFactor		"250"
 	Block {
 	  BlockType		  Inport
 	  Name			  "Position"
@@ -2081,10 +2076,100 @@ Model {
 	  DisplayOption		  "bar"
 	}
 	Block {
+	  BlockType		  SubSystem
+	  Name			  "MATLAB Function"
+	  SID			  "10299"
+	  Ports			  [1]
+	  Position		  [555, 254, 610, 296]
+	  ZOrder		  3480
+	  LibraryVersion	  "1.32"
+	  ErrorFcn		  "Stateflow.Translate.translate"
+	  PermitHierarchicalResolution "ExplicitOnly"
+	  TreatAsAtomicUnit	  on
+	  RequestExecContextInheritance	off
+	  SFBlockType		  "MATLAB Function"
+	  Variant		  off
+	  System {
+	    Name		    "MATLAB Function"
+	    Location		    [223, 338, 826, 833]
+	    Open		    off
+	    ModelBrowserVisibility  off
+	    ModelBrowserWidth	    200
+	    ScreenColor		    "white"
+	    PaperOrientation	    "landscape"
+	    PaperPositionMode	    "auto"
+	    PaperType		    "A4"
+	    PaperUnits		    "centimeters"
+	    TiledPaperMargins	    [1.270000, 1.270000, 1.270000, 1.270000]
+	    TiledPageScale	    1
+	    ShowPageBoundaries	    off
+	    ZoomFactor		    "100"
+	    SIDHighWatermark	    "18"
+	    Block {
+	      BlockType		      Inport
+	      Name		      "u"
+	      SID		      "10299::1"
+	      Position		      [20, 101, 40, 119]
+	      ZOrder		      -1
+	      IconDisplay	      "Port number"
+	    }
+	    Block {
+	      BlockType		      Demux
+	      Name		      " Demux "
+	      SID		      "10299::17"
+	      Ports		      [1, 1]
+	      Position		      [270, 100, 320, 140]
+	      ZOrder		      8
+	      Outputs		      "1"
+	    }
+	    Block {
+	      BlockType		      S-Function
+	      Name		      " SFunction "
+	      SID		      "10299::16"
+	      Tag		      "Stateflow S-Function HILS_Px4 2"
+	      Ports		      [1, 1]
+	      Position		      [180, 100, 230, 140]
+	      ZOrder		      7
+	      FunctionName	      "sf_sfun"
+	      PortCounts	      "[1 1]"
+	      SFunctionDeploymentMode off
+	      EnableBusSupport	      on
+	    }
+	    Block {
+	      BlockType		      Terminator
+	      Name		      " Terminator "
+	      SID		      "10299::18"
+	      Position		      [460, 111, 480, 129]
+	      ZOrder		      9
+	    }
+	    Line {
+	      ZOrder		      1
+	      SrcBlock		      "u"
+	      SrcPort		      1
+	      DstBlock		      " SFunction "
+	      DstPort		      1
+	    }
+	    Line {
+	      ZOrder		      2
+	      SrcBlock		      " Demux "
+	      SrcPort		      1
+	      DstBlock		      " Terminator "
+	      DstPort		      1
+	    }
+	    Line {
+	      ZOrder		      3
+	      SrcBlock		      " SFunction "
+	      SrcPort		      1
+	      DstBlock		      " Demux "
+	      DstPort		      1
+	    }
+	  }
+	}
+	Block {
 	  BlockType		  Outport
 	  Name			  "xOut"
 	  SID			  "10236"
-	  Position		  [585, 123, 615, 137]
+	  Position		  [650, 123, 680, 137]
 	  ZOrder		  3341
 	  IconDisplay		  "Port number"
 	}
@@ -2092,7 +2177,7 @@ Model {
 	  BlockType		  Outport
 	  Name			  "yOut"
 	  SID			  "10237"
-	  Position		  [585, 163, 615, 177]
+	  Position		  [620, 163, 650, 177]
 	  ZOrder		  3342
 	  Port			  "2"
 	  IconDisplay		  "Port number"
@@ -2110,8 +2195,18 @@ Model {
 	  ZOrder		  24
 	  SrcBlock		  "Position"
 	  SrcPort		  1
-	  DstBlock		  "Demux"
-	  DstPort		  1
+	  Points		  [19, 0]
+	  Branch {
+	    ZOrder		    30
+	    DstBlock		    "Demux"
+	    DstPort		    1
+	  }
+	  Branch {
+	    ZOrder		    29
+	    Points		    [0, 105]
+	    DstBlock		    "MATLAB Function"
+	    DstPort		    1
+	  }
 	}
 	Line {
 	  ZOrder		  25
@@ -2135,17 +2230,6 @@ Model {
 	  DstPort		  1
 	}
       }
-    }
-    Block {
-      BlockType		      Demux
-      Name		      "Demux"
-      SID		      "10275"
-      Ports		      [1, 3]
-      Position		      [1090, 81, 1095, 199]
-      ZOrder		      3475
-      ShowName		      off
-      Outputs		      "3"
-      DisplayOption	      "bar"
     }
     Block {
       BlockType		      Display
@@ -2176,20 +2260,11 @@ Model {
     }
     Block {
       BlockType		      Display
-      Name		      "Display4"
-      SID		      "10252"
+      Name		      "Display6"
+      SID		      "10295"
       Ports		      [1]
-      Position		      [705, 85, 795, 115]
-      ZOrder		      3459
-      Decimation	      "1"
-    }
-    Block {
-      BlockType		      Display
-      Name		      "Display5"
-      SID		      "10282"
-      Ports		      [1]
-      Position		      [1100, -45, 1190, -15]
-      ZOrder		      3482
+      Position		      [355, 162, 445, 198]
+      ZOrder		      3483
       Decimation	      "1"
     }
     Block {
@@ -2199,121 +2274,10 @@ Model {
       Position		      [300, 215, 330, 245]
       ZOrder		      3464
       ShowName		      off
+      Gain		      "-1.1"
       ParamDataTypeStr	      "Inherit: Inherit via internal rule"
       OutDataTypeStr	      "Inherit: Inherit via internal rule"
       SaturateOnIntegerOverflow	off
-    }
-    Block {
-      BlockType		      Gain
-      Name		      "Gain"
-      SID		      "10273"
-      Position		      [650, 85, 680, 115]
-      ZOrder		      3473
-      Gain		      "0"
-      ParamDataTypeStr	      "Inherit: Inherit via internal rule"
-      OutDataTypeStr	      "Inherit: Inherit via internal rule"
-      SaturateOnIntegerOverflow	off
-    }
-    Block {
-      BlockType		      Gain
-      Name		      "Gain1"
-      SID		      "10281"
-      Position		      [715, 5, 745, 35]
-      ZOrder		      3481
-      Gain		      "12"
-      ParamDataTypeStr	      "Inherit: Inherit via internal rule"
-      OutDataTypeStr	      "Inherit: Inherit via internal rule"
-      SaturateOnIntegerOverflow	off
-    }
-    Block {
-      BlockType		      SubSystem
-      Name		      "MATLAB Function"
-      SID		      "10276"
-      Ports		      [1]
-      Position		      [1000, -51, 1055, -9]
-      ZOrder		      3479
-      LibraryVersion	      "1.32"
-      ErrorFcn		      "Stateflow.Translate.translate"
-      PermitHierarchicalResolution "ExplicitOnly"
-      TreatAsAtomicUnit	      on
-      RequestExecContextInheritance off
-      SFBlockType	      "MATLAB Function"
-      Variant		      off
-      System {
-	Name			"MATLAB Function"
-	Location		[223, 338, 826, 833]
-	Open			off
-	ModelBrowserVisibility	off
-	ModelBrowserWidth	200
-	ScreenColor		"white"
-	PaperOrientation	"landscape"
-	PaperPositionMode	"auto"
-	PaperType		"A4"
-	PaperUnits		"centimeters"
-	TiledPaperMargins	[1.270000, 1.270000, 1.270000, 1.270000]
-	TiledPageScale		1
-	ShowPageBoundaries	off
-	ZoomFactor		"100"
-	SIDHighWatermark	"18"
-	Block {
-	  BlockType		  Inport
-	  Name			  "u"
-	  SID			  "10276::1"
-	  Position		  [20, 101, 40, 119]
-	  ZOrder		  -1
-	  IconDisplay		  "Port number"
-	}
-	Block {
-	  BlockType		  Demux
-	  Name			  " Demux "
-	  SID			  "10276::17"
-	  Ports			  [1, 1]
-	  Position		  [270, 100, 320, 140]
-	  ZOrder		  8
-	  Outputs		  "1"
-	}
-	Block {
-	  BlockType		  S-Function
-	  Name			  " SFunction "
-	  SID			  "10276::16"
-	  Tag			  "Stateflow S-Function HILS_Px4 3"
-	  Ports			  [1, 1]
-	  Position		  [180, 100, 230, 140]
-	  ZOrder		  7
-	  FunctionName		  "sf_sfun"
-	  PortCounts		  "[1 1]"
-	  SFunctionDeploymentMode off
-	  EnableBusSupport	  on
-	}
-	Block {
-	  BlockType		  Terminator
-	  Name			  " Terminator "
-	  SID			  "10276::18"
-	  Position		  [460, 111, 480, 129]
-	  ZOrder		  9
-	}
-	Line {
-	  ZOrder		  1
-	  SrcBlock		  "u"
-	  SrcPort		  1
-	  DstBlock		  " SFunction "
-	  DstPort		  1
-	}
-	Line {
-	  ZOrder		  2
-	  SrcBlock		  " Demux "
-	  SrcPort		  1
-	  DstBlock		  " Terminator "
-	  DstPort		  1
-	}
-	Line {
-	  ZOrder		  3
-	  SrcBlock		  " SFunction "
-	  SrcPort		  1
-	  DstBlock		  " Demux "
-	  DstPort		  1
-	}
-      }
     }
     Block {
       BlockType		      SubSystem
@@ -2329,7 +2293,7 @@ Model {
       Variant		      off
       System {
 	Name			"Psuedo Positioning"
-	Location		[-8, 0, 869, 744]
+	Location		[-8, 0, 924, 744]
 	Open			on
 	ModelBrowserVisibility	off
 	ModelBrowserWidth	200
@@ -2341,7 +2305,7 @@ Model {
 	TiledPaperMargins	[1.270000, 1.270000, 1.270000, 1.270000]
 	TiledPageScale		1
 	ShowPageBoundaries	off
-	ZoomFactor		"118"
+	ZoomFactor		"100"
 	Block {
 	  BlockType		  Inport
 	  Name			  "Fz"
@@ -2388,7 +2352,7 @@ Model {
 	  Variant		  off
 	  System {
 	    Name		    "Att To Pos"
-	    Location		    [-8, 0, 869, 744]
+	    Location		    [-8, 0, 924, 744]
 	    Open		    on
 	    ModelBrowserVisibility  off
 	    ModelBrowserWidth	    200
@@ -2405,7 +2369,7 @@ Model {
 	      BlockType		      Inport
 	      Name		      "Fz"
 	      SID		      "8569"
-	      Position		      [130, 283, 160, 297]
+	      Position		      [310, 288, 340, 302]
 	      ZOrder		      2146
 	      IconDisplay	      "Port number"
 	    }
@@ -2413,7 +2377,7 @@ Model {
 	      BlockType		      Inport
 	      Name		      "Attitude"
 	      SID		      "8568"
-	      Position		      [130, 223, 160, 237]
+	      Position		      [310, 223, 340, 237]
 	      ZOrder		      -1
 	      Port		      "2"
 	      IconDisplay	      "Port number"
@@ -2422,7 +2386,7 @@ Model {
 	      BlockType		      Inport
 	      Name		      "omega"
 	      SID		      "8570"
-	      Position		      [130, 393, 160, 407]
+	      Position		      [310, 328, 340, 342]
 	      ZOrder		      2147
 	      Port		      "3"
 	      IconDisplay	      "Port number"
@@ -2446,26 +2410,6 @@ Model {
 	      BlockMirror	      on
 	      NamePlacement	      "alternate"
 	      SaturateOnIntegerOverflow	off
-	    }
-	    Block {
-	      BlockType		      Sum
-	      Name		      "Add"
-	      SID		      "8571"
-	      Ports		      [2, 1]
-	      Position		      [335, 266, 350, 359]
-	      ZOrder		      3198
-	      Inputs		      "2"
-	      InputSameDT	      off
-	      OutDataTypeStr	      "Inherit: Inherit via internal rule"
-	      SaturateOnIntegerOverflow	off
-	    }
-	    Block {
-	      BlockType		      Constant
-	      Name		      "CTh"
-	      SID		      "8572"
-	      Position		      [270, 324, 300, 346]
-	      ZOrder		      3199
-	      Value		      "25"
 	    }
 	    Block {
 	      BlockType		      Constant
@@ -2671,7 +2615,7 @@ Model {
 	      Variant		      off
 	      System {
 		Name			"Position Estimation"
-		Location		[-8, 0, 869, 744]
+		Location		[-8, 0, 924, 744]
 		Open			on
 		ModelBrowserVisibility	off
 		ModelBrowserWidth	200
@@ -2929,7 +2873,7 @@ Model {
 		  Name			  "Product5"
 		  SID			  "8620"
 		  Ports			  [2, 1]
-		  Position		  [735, 902, 790, 953]
+		  Position		  [725, 902, 780, 953]
 		  ZOrder		  2202
 		  Multiplication	  "Matrix(*)"
 		  InputSameDT		  off
@@ -3128,7 +3072,7 @@ Model {
 		  ZOrder		  19
 		  SrcBlock		  "Product5"
 		  SrcPort		  1
-		  Points		  [12, 0]
+		  Points		  [22, 0]
 		  Branch {
 		    ZOrder		    30
 		    Points		    [0, 85]
@@ -3159,7 +3103,7 @@ Model {
 	      BlockMirror	      on
 	      NamePlacement	      "alternate"
 	      Criteria		      "u2 > Threshold"
-	      Threshold		      "0.8*pi/180"
+	      Threshold		      "1.2*pi/180"
 	      InputSameDT	      off
 	      SaturateOnIntegerOverflow	off
 	    }
@@ -3172,7 +3116,7 @@ Model {
 	      BlockMirror	      on
 	      NamePlacement	      "alternate"
 	      Criteria		      "u2 > Threshold"
-	      Threshold		      "0.8*pi/180"
+	      Threshold		      "1.2*pi/180"
 	      InputSameDT	      off
 	      SaturateOnIntegerOverflow	off
 	    }
@@ -3181,7 +3125,7 @@ Model {
 	      Name		      "Saturation"
 	      SID		      "9347"
 	      Ports		      [1, 1]
-	      Position		      [415, 215, 445, 245]
+	      Position		      [485, 215, 515, 245]
 	      ZOrder		      3347
 	      InputPortMap	      "u0"
 	      UpperLimit	      "1.99*pi"
@@ -3196,7 +3140,7 @@ Model {
 	      BlockMirror	      on
 	      NamePlacement	      "alternate"
 	      Criteria		      "u2 > Threshold"
-	      Threshold		      "0.8*pi/180"
+	      Threshold		      "1.2*pi/180"
 	      InputSameDT	      off
 	      SaturateOnIntegerOverflow	off
 	    }
@@ -3210,7 +3154,7 @@ Model {
 	      NamePlacement	      "alternate"
 	      ShowName		      off
 	      Criteria		      "u2 > Threshold"
-	      Threshold		      "0.8*pi/180"
+	      Threshold		      "1.2*pi/180"
 	      InputSameDT	      off
 	      SaturateOnIntegerOverflow	off
 	    }
@@ -3278,7 +3222,7 @@ Model {
 	      Variant		      off
 	      System {
 		Name			"Velocity Estimation"
-		Location		[-8, 0, 869, 744]
+		Location		[-8, 0, 924, 744]
 		Open			on
 		ModelBrowserVisibility	off
 		ModelBrowserWidth	200
@@ -3290,7 +3234,7 @@ Model {
 		TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
 		TiledPageScale		1
 		ShowPageBoundaries	off
-		ZoomFactor		"40"
+		ZoomFactor		"80"
 		Block {
 		  BlockType		  Inport
 		  Name			  "Fz"
@@ -3699,7 +3643,7 @@ Model {
 		  Variant		  off
 		  System {
 		    Name		    "Subsystem"
-		    Location		    [-8, 0, 869, 744]
+		    Location		    [-8, 0, 924, 744]
 		    Open		    off
 		    ModelBrowserVisibility  off
 		    ModelBrowserWidth	    200
@@ -3817,7 +3761,7 @@ Model {
 		  NamePlacement		  "alternate"
 		  ShowName		  off
 		  Criteria		  "u2 > Threshold"
-		  Threshold		  "0.8*pi/180"
+		  Threshold		  "1.2*pi/180"
 		  InputSameDT		  off
 		  SaturateOnIntegerOverflow off
 		}
@@ -3830,7 +3774,7 @@ Model {
 		  BlockMirror		  on
 		  NamePlacement		  "alternate"
 		  Criteria		  "u2 > Threshold"
-		  Threshold		  "0.8*pi/180"
+		  Threshold		  "1.2*pi/180"
 		  InputSameDT		  off
 		  SaturateOnIntegerOverflow off
 		}
@@ -4386,30 +4330,9 @@ Model {
 	    }
 	    Block {
 	      BlockType		      Gain
-	      Name		      "convert"
-	      SID		      "8628"
-	      Position		      [230, 275, 265, 305]
-	      ZOrder		      3197
-	      Gain		      "200*175/200"
-	      ParamDataTypeStr	      "Inherit: Inherit via internal rule"
-	      SaturateOnIntegerOverflow	off
-	    }
-	    Block {
-	      BlockType		      Gain
-	      Name		      "cvrt"
-	      SID		      "8629"
-	      Position		      [390, 300, 425, 330]
-	      ZOrder		      3201
-	      Gain		      "43"
-	      ParamDataTypeStr	      "Inherit: Inherit via internal rule"
-	      OutDataTypeStr	      "Inherit: Inherit via internal rule"
-	      SaturateOnIntegerOverflow	off
-	    }
-	    Block {
-	      BlockType		      Gain
 	      Name		      "deg to rad"
 	      SID		      "8630"
-	      Position		      [230, 215, 265, 245]
+	      Position		      [400, 215, 435, 245]
 	      ZOrder		      2205
 	      Gain		      "pi/180"
 	      ParamDataTypeStr	      "Inherit: Inherit via internal rule"
@@ -4419,21 +4342,10 @@ Model {
 	      BlockType		      Gain
 	      Name		      "deg/s to rad/s"
 	      SID		      "8945"
-	      Position		      [230, 385, 265, 415]
+	      Position		      [400, 320, 435, 350]
 	      ZOrder		      3204
 	      Gain		      "pi/180"
 	      ParamDataTypeStr	      "Inherit: Inherit via internal rule"
-	      SaturateOnIntegerOverflow	off
-	    }
-	    Block {
-	      BlockType		      Gain
-	      Name		      "vg/ph to rad/s1"
-	      SID		      "8631"
-	      Position		      [460, 300, 495, 330]
-	      ZOrder		      3200
-	      Gain		      "2*pi/60"
-	      ParamDataTypeStr	      "Inherit: Inherit via internal rule"
-	      OutDataTypeStr	      "Inherit: Inherit via internal rule"
 	      SaturateOnIntegerOverflow	off
 	    }
 	    Block {
@@ -4467,46 +4379,10 @@ Model {
 	      DstPort		      1
 	    }
 	    Line {
-	      ZOrder		      12
-	      SrcBlock		      "vg/ph to rad/s1"
-	      SrcPort		      1
-	      Points		      [0, -20]
-	      DstBlock		      "Velocity Estimation"
-	      DstPort		      1
-	    }
-	    Line {
-	      ZOrder		      13
+	      ZOrder		      245
 	      SrcBlock		      "Fz"
 	      SrcPort		      1
-	      DstBlock		      "convert"
-	      DstPort		      1
-	    }
-	    Line {
-	      ZOrder		      14
-	      SrcBlock		      "convert"
-	      SrcPort		      1
-	      DstBlock		      "Add"
-	      DstPort		      1
-	    }
-	    Line {
-	      ZOrder		      15
-	      SrcBlock		      "Add"
-	      SrcPort		      1
-	      DstBlock		      "cvrt"
-	      DstPort		      1
-	    }
-	    Line {
-	      ZOrder		      16
-	      SrcBlock		      "CTh"
-	      SrcPort		      1
-	      DstBlock		      "Add"
-	      DstPort		      2
-	    }
-	    Line {
-	      ZOrder		      17
-	      SrcBlock		      "cvrt"
-	      SrcPort		      1
-	      DstBlock		      "vg/ph to rad/s1"
+	      DstBlock		      "Velocity Estimation"
 	      DstPort		      1
 	    }
 	    Line {
@@ -4527,7 +4403,6 @@ Model {
 	      ZOrder		      24
 	      SrcBlock		      "deg/s to rad/s"
 	      SrcPort		      1
-	      Points		      [263, 0; 0, -65]
 	      DstBlock		      "Velocity Estimation"
 	      DstPort		      3
 	    }
@@ -4792,7 +4667,7 @@ Model {
 	      ZOrder		      196
 	      SrcBlock		      "Saturation"
 	      SrcPort		      1
-	      Points		      [83, 0]
+	      Points		      [13, 0]
 	      Branch {
 		ZOrder			7
 		Points			[0, 85]
@@ -5059,6 +4934,21 @@ Model {
       }
     }
     Block {
+      BlockType		      Reference
+      Name		      "Real-Time\nSynchronization"
+      SID		      "10303"
+      Ports		      []
+      Position		      [615, 145, 670, 185]
+      ZOrder		      3485
+      LibraryVersion	      "1.141"
+      SourceBlock	      "sldrtlib/Real-Time\nSynchronization"
+      SourceType	      "Simulink Desktop Real-Time Synchronization"
+      SampleTime	      "0.1"
+      MaxMissedTicks	      "10"
+      ShowMissedTicks	      off
+      YieldWhenWaiting	      off
+    }
+    Block {
       BlockType		      SubSystem
       Name		      "Visualization"
       SID		      "10216"
@@ -5133,12 +5023,22 @@ Model {
       }
     }
     Block {
+      BlockType		      Constant
+      Name		      "kickoff"
+      SID		      "10260"
+      Position		      [215, 220, 245, 240]
+      ZOrder		      3471
+      ShowName		      off
+      Value		      "0"
+    }
+    Block {
       BlockType		      Gain
       Name		      "pin"
       SID		      "10257"
       Position		      [300, 335, 330, 365]
       ZOrder		      3468
       ShowName		      off
+      Gain		      "0"
       ParamDataTypeStr	      "Inherit: Inherit via internal rule"
       OutDataTypeStr	      "Inherit: Inherit via internal rule"
       SaturateOnIntegerOverflow	off
@@ -5150,6 +5050,7 @@ Model {
       Position		      [300, 275, 330, 305]
       ZOrder		      3466
       ShowName		      off
+      Gain		      "-1.07"
       ParamDataTypeStr	      "Inherit: Inherit via internal rule"
       OutDataTypeStr	      "Inherit: Inherit via internal rule"
       SaturateOnIntegerOverflow	off
@@ -5161,6 +5062,7 @@ Model {
       Position		      [300, 365, 330, 395]
       ZOrder		      3469
       ShowName		      off
+      Gain		      "0"
       ParamDataTypeStr	      "Inherit: Inherit via internal rule"
       OutDataTypeStr	      "Inherit: Inherit via internal rule"
       SaturateOnIntegerOverflow	off
@@ -5172,6 +5074,7 @@ Model {
       Position		      [300, 395, 330, 425]
       ZOrder		      3470
       ShowName		      off
+      Gain		      "0"
       ParamDataTypeStr	      "Inherit: Inherit via internal rule"
       OutDataTypeStr	      "Inherit: Inherit via internal rule"
       SaturateOnIntegerOverflow	off
@@ -5183,6 +5086,7 @@ Model {
       Position		      [300, 245, 330, 275]
       ZOrder		      3465
       ShowName		      off
+      Gain		      "-1.1"
       ParamDataTypeStr	      "Inherit: Inherit via internal rule"
       OutDataTypeStr	      "Inherit: Inherit via internal rule"
       SaturateOnIntegerOverflow	off
@@ -5194,44 +5098,10 @@ Model {
       Position		      [300, 305, 330, 335]
       ZOrder		      3467
       ShowName		      off
+      Gain		      "-145.02"
       ParamDataTypeStr	      "Inherit: Inherit via internal rule"
       OutDataTypeStr	      "Inherit: Inherit via internal rule"
       SaturateOnIntegerOverflow	off
-    }
-    Block {
-      BlockType		      Outport
-      Name		      "xOut"
-      SID		      "10277"
-      Position		      [1120, 93, 1150, 107]
-      ZOrder		      3476
-      IconDisplay	      "Port number"
-    }
-    Block {
-      BlockType		      Outport
-      Name		      "yOut"
-      SID		      "10278"
-      Position		      [1120, 133, 1150, 147]
-      ZOrder		      3477
-      Port		      "2"
-      IconDisplay	      "Port number"
-    }
-    Block {
-      BlockType		      Outport
-      Name		      "zOut"
-      SID		      "10279"
-      Position		      [1120, 173, 1150, 187]
-      ZOrder		      3478
-      Port		      "3"
-      IconDisplay	      "Port number"
-    }
-    Block {
-      BlockType		      Outport
-      Name		      "Out"
-      SID		      "10280"
-      Position		      [1160, 13, 1190, 27]
-      ZOrder		      3480
-      Port		      "4"
-      IconDisplay	      "Port number"
     }
     Block {
       BlockType		      Scope
@@ -5290,8 +5160,18 @@ Model {
       ZOrder		      890
       SrcBlock		      "Fzin"
       SrcPort		      1
-      DstBlock		      "Data_In"
-      DstPort		      1
+      Points		      [1, 0]
+      Branch {
+	ZOrder			984
+	Points			[0, -50]
+	DstBlock		"Display6"
+	DstPort			1
+      }
+      Branch {
+	ZOrder			983
+	DstBlock		"Data_In"
+	DstPort			1
+      }
     }
     Line {
       ZOrder		      913
@@ -5337,7 +5217,7 @@ Model {
     }
     Line {
       ZOrder		      883
-      SrcBlock		      "Constant1"
+      SrcBlock		      "kickoff"
       SrcPort		      1
       Points		      [25, 0]
       Branch {
@@ -5431,40 +5311,10 @@ Model {
       DstPort		      3
     }
     Line {
-      ZOrder		      956
-      SrcBlock		      "Constant2"
-      SrcPort		      1
-      Points		      [31, 0]
-      Branch {
-	ZOrder			968
-	Points			[0, -80]
-	DstBlock		"Gain1"
-	DstPort			1
-      }
-      Branch {
-	ZOrder			967
-	DstBlock		"Gain"
-	DstPort			1
-      }
-    }
-    Line {
-      ZOrder		      957
-      SrcBlock		      "Gain"
-      SrcPort		      1
-      DstBlock		      "Display4"
-      DstPort		      1
-    }
-    Line {
       ZOrder		      805
       SrcBlock		      "Psuedo Positioning"
       SrcPort		      1
       Points		      [30, 0]
-      Branch {
-	ZOrder			964
-	Points			[0, -155]
-	DstBlock		"Demux"
-	DstPort			1
-      }
       Branch {
 	ZOrder			926
 	Points			[0, 180]
@@ -5474,54 +5324,6 @@ Model {
       Branch {
 	ZOrder			823
 	DstBlock		"Data_Out"
-	DstPort			1
-      }
-    }
-    Line {
-      ZOrder		      961
-      SrcBlock		      "Demux"
-      SrcPort		      1
-      DstBlock		      "xOut"
-      DstPort		      1
-    }
-    Line {
-      ZOrder		      962
-      SrcBlock		      "Demux"
-      SrcPort		      2
-      DstBlock		      "yOut"
-      DstPort		      1
-    }
-    Line {
-      ZOrder		      963
-      SrcBlock		      "Demux"
-      SrcPort		      3
-      DstBlock		      "zOut"
-      DstPort		      1
-    }
-    Line {
-      ZOrder		      970
-      SrcBlock		      "Gain1"
-      SrcPort		      1
-      Points		      [210, 0]
-      Branch {
-	ZOrder			977
-	Points			[132, 0]
-	Branch {
-	  ZOrder		  975
-	  Points		  [0, -50]
-	  DstBlock		  "Display5"
-	  DstPort		  1
-	}
-	Branch {
-	  ZOrder		  973
-	  DstBlock		  "Out"
-	  DstPort		  1
-	}
-      }
-      Branch {
-	ZOrder			972
-	Points			[0, -50]
-	DstBlock		"MATLAB Function"
 	DstPort			1
       }
     }
@@ -5774,7 +5576,7 @@ Stateflow {
   }
   chart {
     id			    14
-    name		    "MATLAB Function"
+    name		    "Data_Out/MATLAB Function"
     windowPosition	    [422 539.941 189 413]
     viewLimits		    [0 156.75 0 153.75]
     screen		    [1 1 3600 1200 1.180555555555556]
@@ -5782,15 +5584,12 @@ Stateflow {
     firstTransition	    18
     firstJunction	    17
     viewObj		    14
-    visible		    1
     machine		    1
-    subviewS {
-    }
     ssIdHighWaterMark	    5
     decomposition	    CLUSTER_CHART
     type		    EML_CHART
     firstData		    16
-    chartFileNumber	    3
+    chartFileNumber	    2
     disableImplicitCasting  1
     eml {
       name		      "fcn"
@@ -5810,9 +5609,9 @@ Stateflow {
     decomposition	    CLUSTER_STATE
     eml {
       isEML		      1
-      script		      "function fcn(u)\ncoder.extrinsic('set_param'); \nset_param('HILS_Px4/Out', 'UserData', u);\n% set"
-      "_param('HILS_Px4/Data_Out/xOut', 'UserData', u(1));\n% set_param('HILS_Px4/Data_Out/yOut', 'UserData', u(2));\n%"
-      " set_param('HILS_Px4/zOut', 'UserData', u(3));"
+      script		      "function fcn(u)\ncoder.extrinsic('set_param'); \n% set_param('HILS_Px4/Out', 'UserData', u);\nset"
+      "_param('HILS_Px4/Data_Out/xOut', 'UserData', u(1));\nset_param('HILS_Px4/Data_Out/yOut', 'UserData', u(2));\nset"
+      "_param('HILS_Px4/Data_Out/zOut', 'UserData', u(3));\nend"
       editorLayout	      "100 M4x1[10 5 700 500]"
     }
   }
@@ -5870,7 +5669,7 @@ Stateflow {
   }
   instance {
     id			    19
-    name		    "MATLAB Function"
+    name		    "Data_Out/MATLAB Function"
     machine		    1
     chart		    14
   }

@@ -81,7 +81,7 @@ global mTimer;
 % mTimer = timer('ExecutionMode', 'fixedRate',...
 %     'Period', 0.001, 'TimerFcn',{@update_feedback, handles});
 
-mTimer = timer('executionMode','fixedRate', 'period', 0.1, ...
+mTimer = timer('executionMode','fixedRate', 'period', 0.01, ...
     'TimerFcn', @(hObject, eventdata)timerCallback(hObject, eventdata, handles));
 
 handles.timerStatus = 'stopped';
@@ -96,23 +96,32 @@ guidata(hObject, handles);
 
 function timerCallback(hObject, eventdata, handles)
     handles = guidata(handles.figure1);
-    handles.rollFb
+
+    set_param([bdroot '/Fzin'],'Gain', num2str(handles.rollFb))
+    set_param([bdroot '/rollin'],'Gain', num2str(handles.rollFb))
+    set_param([bdroot '/pitchin'],'Gain', num2str(handles.pitchFb))
+    set_param([bdroot '/yawin'],'Gain', num2str(handles.yawFb))
+    set_param([bdroot '/pin'],'Gain', num2str(handles.pFb))
+    set_param([bdroot '/qin'],'Gain', num2str(handles.qFb))
+    set_param([bdroot '/rin'],'Gain', num2str(handles.rFb))
     
-    set_param([bdroot '/Gain'],'Gain', num2str(handles.rollFb))
+    
     status = get_param(bdroot,'simulationstatus');
-    if strcmp(status,'running')    
-%         handles.northFb = get_param([bdroot '/xOut'],'UserData');
-%         handles.eastFb = get_param([bdroot '/yOut'],'UserData');
+%     if strcmp(status,'running')    
+    northFb = get_param([bdroot '/Data_Out/xOut'],'UserData');
+    eastFb = get_param([bdroot '/Data_Out/yOut'],'UserData')
 %         
+%         
+        set(handles.tbxNorthFb, 'String', num2str(northFb));
+        set(handles.tbxEastFb, 'String', num2str(eastFb));
         
-        set(handles.tbxNorthFb, 'string', '123');
-        set(handles.tbxEastFb, 'string', num2str(handles.eastFb))
+        handles.northFb = northFb;
+        handles.eastFb = eastFb; 
 %         set_param(bdroot, 'SimulationCommand', 'Update')
-    end
+%     end
     guidata(handles.figure1, handles);
     
     
-
 
 % --- Outputs from this function are returned to the command line.
 function varargout = mGCS2_OutputFcn(hObject, eventdata, handles) 
@@ -140,6 +149,7 @@ else
     handles.rollSetpoint = rollSetpoint;
 end
 guidata(hObject, handles); 
+
 
 % --- Executes during object creation, after setting all properties.
 function tbxRoll_CreateFcn(hObject, eventdata, handles)
@@ -178,7 +188,6 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-
 function tbxYaw_Callback(hObject, eventdata, handles)
 % hObject    handle to tbxYaw (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -188,6 +197,7 @@ function tbxYaw_Callback(hObject, eventdata, handles)
 %        str2double(get(hObject,'String')) returns contents of tbxYaw as a double
 handles.yawSetpoint = str2double(get(hObject, 'String'));
 guidata(hObject, handles);
+
 
 % --- Executes during object creation, after setting all properties.
 function tbxYaw_CreateFcn(hObject, eventdata, handles)
@@ -349,8 +359,6 @@ handles.eastSetpoint = 0;
 guidata(hObject, handles);
 
 
-    
-
 
 function tbxComPort_Callback(hObject, eventdata, handles)
 % hObject    handle to tbxComPort (see GCBO)
@@ -397,6 +405,7 @@ function btnConnect_Callback(hObject, eventdata, handles)
         status = get_param(bdroot,'simulationstatus');
         if strcmp(status,'stopped')
             set_param(bdroot,'simulationcommand','start')
+            set_param([bdroot '/kickoff'],'Value', num2str(0))
         end
 %         assignin('base','gs_handles',handles)
        
@@ -589,6 +598,9 @@ function btnSync_Callback(hObject, eventdata, handles)
 % hObject    handle to btnSync (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
+set_param([bdroot '/kickoff'],'Value', num2str(1))
+
 if strcmp(handles.timerStatus, 'stopped')
     global mTimer;
     start(mTimer);
