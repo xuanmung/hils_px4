@@ -2,9 +2,11 @@
 #include <sensor_msgs/Imu.h>
 #include <geometry_msgs/Quaternion.h>
 #include <geometry_msgs/Vector3.h>
-//#include <btQuaternion.h>
 #include <tf/transform_datatypes.h>
 #include <iomanip>
+
+#include <geometry_msgs/PoseStamped.h>
+
 
 #include <serial/serial.h>
 #include <std_msgs/String.h>
@@ -19,29 +21,38 @@
 #define BAUDRATE 57600
 
 
-int phy, theta, psy, p, q, r;
+int				phy, theta, psy, p, q, r;
 //std::vector<uint8_t> buffer;
-std::string mBuffer;
-std::ostringstream mOss;
-serial::Serial mSerial; 
+std::string			mBuffer;
+std::ostringstream		mOss;
+serial::Serial			mSerial; 
+geometry_msgs::Quaternion	orient_quat;
+std::string			receiverBuff;
+geometry_msgs::Vector3		spAtt, spPos, estPos;
+
 
 int rad2cdeg(double rad){
  return (int) (rad * 180.0)/PI*100;
 }
 
 
+//this is the function subscribing the IMU data
 void imuMessageReceived(const sensor_msgs::Imu& msg){ 
 	geometry_msgs::Vector3 omega = msg.angular_velocity; 
-	geometry_msgs::Quaternion orient_quat =  msg.orientation; 
+	//geometry_msgs::Quaternion orient_quat =  msg.orientation; //uncomment this line if errors occur
+	orient_quat =  msg.orientation; 
 	//tf::Matrix3x3 m(orient_quat); 
 	
 	//double roll, pitch, yaw;
 	//m.getRPY(roll, pitch, yaw);
 	//tf::transform_datatypes mtf;
 	geometry_msgs::Vector3 orient_euler;
+	
 	orient_euler.z = - tf::getYaw(orient_quat) * 57.296; //- 57.296 * atan2(2*(orient_quat.x*orient_quat.y + orient_quat.z*orient_quat.w),
 				 //1 - 2*(orient_quat.y*orient_quat.y + orient_quat.z*orient_quat.z));
+				 
 	orient_euler.y = 57.296 * asin(2*(orient_quat.x*orient_quat.z - orient_quat.w*orient_quat.y));
+	
 	orient_euler.x = 180 - 57.296 * atan2(2*(orient_quat.x*orient_quat.w + orient_quat.y*orient_quat.z), 
 				 1 - 2*(orient_quat.z*orient_quat.z + orient_quat.w*orient_quat.w));
 				 
@@ -69,7 +80,10 @@ void imuMessageReceived(const sensor_msgs::Imu& msg){
 		
 }
 
-//This function is to convert an integer number, num, into a form of normlized string with the length of normSize
+/*
+* This function is to convert an integer number, num, into a form of 
+* normlized string with the length of normSize
+*/
 std::string norm_str(int num, uint normSize){
 	
 	std::string out_str("");
@@ -105,12 +119,19 @@ std::string norm_str(int num, uint normSize){
 	return out_str;
 }
 
+
 int main(int argc, char **argv){
 	ros::init(argc, argv, "subscribe_to_Imu");
 	ros::NodeHandle nh;
 	
 	ros::Subscriber sub = nh.subscribe("mavros/imu/data", 10, 
 		&imuMessageReceived);
+		
+	ros::Publisher estPosPublisher = nh.advertise<geometry_msgs::PoseStamped>(
+		"mavros/vision_pose/pose", 100);
+			
+	ros::Publisher spPosPublisher = nh.advertise<geometry_msgs::PoseStamped>(
+		"mavros/setpoint_position/local", 100);	
 		
 	//("/dev/ttyUSB1", 57600, serial::Timeout::simpleTimeout(TIMEOUT));
 	try{
@@ -150,7 +171,7 @@ int main(int argc, char **argv){
 	  mOss.str("");
 	  mOss.clear();
 
-	  	  mSerial.write("c");
+  	  mSerial.write("c");
 	  mOss << psy;
 	  ROS_INFO_STREAM("Psy = " << (std::string)mOss.str());
 	  mSerial.write(norm_str(psy, 5));
@@ -178,11 +199,116 @@ int main(int argc, char **argv){
 	  mOss.str("");
 	  mOss.clear();
 	  
+	  //receiving data sent from Matlab GUI (mGCS)
 	  if (mSerial.available()){
-		  std::string receiver = mSerial.read(8);
 		  
-		  ROS_INFO_STREAM("Receiver: " << receiver);
+		  ROS_INFO("Ting-ting!!!");
+		  
+		  std::stringstream ss;
+		  
+		  std::string flag = mSerial.read(1);
+		  
+		  if	((flag != (std::string)"a") 
+			&& (flag != (std::string)"b") 
+			&& (flag != (std::string)"c")
+			&& (flag != (std::string)"n") 
+			&& (flag != (std::string)"e")
+			&& (flag != (std::string)"x")
+			&& (flag != (std::string)"y")
+			&& (flag != (std::string)"h")){
+			//ROS_INFO_STREAM("Flag: " << flag);
+		  }
+		  else{
+			//ROS_INFO_STREAM("Flag: " << flag);
+			
+			if (flag == (std::string)"a"){
+				receiverBuff = mSerial.read(6);
+				ss << receiverBuff;
+				ss >> spAtt.x;
+				ss.str("");
+				ss.clear();
+				ROS_INFO_STREAM("Roll: " << spAtt.x);
+			  }
+	  
+			  else if (flag == (std::string)"b"){
+				receiverBuff = mSerial.read(6);
+				ss << receiverBuff;
+				ss >> spAtt.y;
+				ss.str("");
+				ss.clear();
+				ROS_INFO_STREAM("Pitch: " << spAtt.y);
+			  }
+			  else if (flag == (std::string)"c"){
+				receiverBuff = mSerial.read(6);
+				ss << receiverBuff;
+				ss >> spAtt.z;
+				ss.str("");
+				ss.clear();
+				ROS_INFO_STREAM("Yaw: " << spAtt.z);
+			  }
+			  else if (flag == (std::string)"n"){
+				receiverBuff = mSerial.read(6);
+				ss << receiverBuff;
+				ss >> spPos.x;
+				ss.str("");
+				ss.clear();
+				ROS_INFO_STREAM("North: " << spPos.x);
+			  }
+			  else if (flag == (std::string)"e"){
+				receiverBuff = mSerial.read(6);
+				ss << receiverBuff;
+				ss >> spPos.y;
+				ss.str("");
+				ss.clear();
+				ROS_INFO_STREAM("East: " << spPos.y);
+			  }
+			  else if (flag == (std::string)"x"){
+				receiverBuff = mSerial.read(6);
+				ss << receiverBuff;
+				ss >> estPos.x;
+				ss.str("");
+				ss.clear();
+				ROS_INFO_STREAM("X: " << estPos.x);
+			  }
+			  else if (flag == (std::string)"y"){
+				receiverBuff = mSerial.read(6);
+				ss << receiverBuff;
+				ss >> estPos.y;
+				ss.str("");
+				ss.clear();
+				ROS_INFO_STREAM("Y: " << estPos.y);
+			  }
+			  else if (flag == (std::string)"h"){
+				receiverBuff = mSerial.read(6);
+				ss << receiverBuff;
+				ss >> estPos.z;
+				ss.str("");
+				ss.clear();
+				ROS_INFO_STREAM("h: " << estPos.z);
+			  }
+		  }
+
+		  
+		  //std::string receiver = mSerial.read(8);
+		  
+		  //ROS_INFO_STREAM("Receiver: " << receiver);
 	  }
+	  
+	  //Publishing the estimated position to the appropriate topic
+	  geometry_msgs::PoseStamped estPosMsg;
+	  estPosMsg.pose.position.x = estPos.x;
+	  estPosMsg.pose.position.y = estPos.y;
+	  estPosMsg.pose.position.z = estPos.z;
+	  estPosMsg.pose.orientation = orient_quat;
+	  estPosPublisher.publish(estPosMsg);
+	  
+	  //Publishing the setpoint position to the appropriate topic
+	  geometry_msgs::PoseStamped spPosMsg;
+	  spPosMsg.pose.position.x = spPos.x;
+	  spPosMsg.pose.position.y = spPos.y;
+	  spPosMsg.pose.position.z = spPos.z;
+	  spPosMsg.pose.orientation = orient_quat;
+	  spPosPublisher.publish(spPosMsg);
 	  
 	 ros::spinOnce();
 	 rate.sleep();
