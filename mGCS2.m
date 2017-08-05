@@ -75,16 +75,30 @@ handles.rFb = 0;
 
 handles.northFb = 0;
 handles.eastFb = 0;
+handles.hFb = 0;
 
 global mSerial;
 global mTimer;
 % mTimer = timer('ExecutionMode', 'fixedRate',...
 %     'Period', 0.001, 'TimerFcn',{@update_feedback, handles});
 
-mTimer = timer('executionMode','fixedRate', 'period', 0.1, ...
+mTimer = timer('executionMode','fixedRate', 'period', 0.02, ...
     'TimerFcn', @(hObject, eventdata)timerCallback(hObject, eventdata, handles));
 
 handles.timerStatus = 'stopped';
+
+% FT controller
+handles.ftSerialStatus = 'none';
+handles.ftBuffer = '';
+handles.ftData = zeros(6, 1);
+handles.ftStatus = 'none';
+handles.ftTimerStatus = 'none';
+
+global ftTimer;
+ftTimer = timer('executionMode','fixedRate', 'period', 0.02, ...
+    'TimerFcn', @(hObject, eventdata)ftTimerCallback(hObject,...
+    eventdata, handles));
+%
 
 % Update handles structure
 guidata(hObject, handles);
@@ -94,25 +108,118 @@ guidata(hObject, handles);
 % UIWAIT makes mGCS2 wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
 
+%
+function ftTimerCallback(hObject, eventdata, handles)
+    mhObject = handles.figure1;
+    handles = guidata(mhObject);
+    global ftSerial;
+    if strcmp(handles.ftSerialStatus, 'open')
+        if strcmp(handles.ftStatus, 'none') ...
+                && strcmp(handles.ftTimerStatus, 'running')
+            fprintf(ftSerial, '%s',char(20));
+%             fprintf(ftSerial, '%s', char(13));
+            handles.ftStatus = 'ready';
+        end
+        if ftSerial.BytesAvailable() ...
+                && strcmp(handles.ftStatus, 'ready')
+            scanBuffer = fscanf(ftSerial, '%s');
+            handles.ftStatus = 'none';
+            scanBufferLen = length(scanBuffer);
+            tmpBuff = '';
+            comma = 0;
+            if scanBufferLen > 0
+                for i=1:1:scanBufferLen
+                    flag = scanBuffer(i);
+                    if (strcmp(flag, char(1))|| strcmp(flag, char(6))||...
+                            strcmp(flag, char(96))||strcmp(flag, char(32))...
+                            ||strcmp(flag, char(10))||strcmp(flag, 'Q')...
+                            ||strcmp(flag, 'R')||strcmp(flag, '>'))
+                        % >> ignore
+                    else
+                        if strcmp(flag, ',')
+                            comma = comma + 1;
+                        end
+                        
+                        %save flag into tmpBuff
+                        tmpBuff = strcat(tmpBuff, scanBuffer(i)); 
+                    end
+                end
+            end
+            if ~isempty(tmpBuff)
+                ftBuffer = tmpBuff;
+                
+%                 dec2hex(ftBuffer);
+                if strcmp(ftBuffer(1),'0') && comma == 6
+                    ftBuffer
+                    commaPtr = [];
+                    ftBuffLen = length(ftBuffer);
+                    for i=1:1:ftBuffLen
+                        if strcmp(ftBuffer(i), ',')
+                            commaPtr(end+1) = i;
+                        end
+                    end
+                    for i=1:1:comma-1
+                        handles.ftData(i) = str2double(ftBuffer(...
+                            commaPtr(i)+1 : commaPtr(i+1)-1));
+                    end
+                    handles.ftData(comma) = str2double(ftBuffer(...
+                        commaPtr(comma)+1 : ftBuffLen));
+%                     guidata(hObject, handles);
+                    handles.ftData(1) = handles.ftData(1) / 20.0;
+                    handles.ftData(2) = -handles.ftData(2) / 20.0;
+                    handles.ftData(3) = -handles.ftData(3) / 1.6;
+                    handles.ftData(4) = handles.ftData(4) / 400.0;
+                    handles.ftData(5) = -handles.ftData(5) / 400.0;
+                    handles.ftData(6) = -handles.ftData(6) / 400.0;
+                    handles.ftData
+                end  
+            end
+        end
+        
+    end
+    guidata(mhObject, handles);
+
+    
+%
 function timerCallback(hObject, eventdata, handles)
     handles = guidata(handles.figure1);
-    handles.rollFb
+
+    set_param([bdroot '/Fzin'],'Gain', num2str(handles.rollFb));
+    set_param([bdroot '/rollin'],'Gain', num2str(handles.rollFb));
+    set_param([bdroot '/pitchin'],'Gain', num2str(handles.pitchFb));
+    set_param([bdroot '/yawin'],'Gain', num2str(handles.yawFb));
+    set_param([bdroot '/pin'],'Gain', num2str(handles.pFb));
+    set_param([bdroot '/qin'],'Gain', num2str(handles.qFb));
+    set_param([bdroot '/rin'],'Gain', num2str(handles.rFb));
     
-    set_param([bdroot '/Gain'],'Gain', num2str(handles.rollFb))
+    
     status = get_param(bdroot,'simulationstatus');
-    if strcmp(status,'running')    
-%         handles.northFb = get_param([bdroot '/xOut'],'UserData');
-%         handles.eastFb = get_param([bdroot '/yOut'],'UserData');
+%     if strcmp(status,'running')    
+    northFb = get_param([bdroot '/Data_Out/xOut'],'UserData');
+    eastFb  = get_param([bdroot '/Data_Out/yOut'],'UserData');
+    hFb     = get_param([bdroot '/Data_Out/zOut'],'UserData');      
 %         
-        
-        set(handles.tbxNorthFb, 'string', '123');
-        set(handles.tbxEastFb, 'string', num2str(handles.eastFb))
-%         set_param(bdroot, 'SimulationCommand', 'Update')
+    set(handles.tbxNorthFb, 'String', num2str(northFb));
+    set(handles.tbxEastFb, 'String', num2str(eastFb));
+    global mSerial;
+    if strcmp(handles.serialStatus,'open') ...
+        && strcmp(handles.timerStatus, 'running')
+        buffer = strcat('x','123');
+%         buffer = strcat('x', num2str_norm(northFb, 5), ...
+%             'y', num2str_norm(eastFb, 5), 'h', num2str_norm(hFb, 5));
+% %             disp(num2str(handles.rollSetpoint));
+        fprintf(mSerial,'%s', buffer);
+        tingting = 5
     end
+
+    handles.northFb = northFb;
+    handles.eastFb = eastFb; 
+    handles.hFb = hFb;
+%         set_param(bdroot, 'SimulationCommand', 'Update')
+%     end
     guidata(handles.figure1, handles);
     
     
-
 
 % --- Outputs from this function are returned to the command line.
 function varargout = mGCS2_OutputFcn(hObject, eventdata, handles) 
@@ -140,6 +247,7 @@ else
     handles.rollSetpoint = rollSetpoint;
 end
 guidata(hObject, handles); 
+
 
 % --- Executes during object creation, after setting all properties.
 function tbxRoll_CreateFcn(hObject, eventdata, handles)
@@ -178,7 +286,6 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-
 function tbxYaw_Callback(hObject, eventdata, handles)
 % hObject    handle to tbxYaw (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -188,6 +295,7 @@ function tbxYaw_Callback(hObject, eventdata, handles)
 %        str2double(get(hObject,'String')) returns contents of tbxYaw as a double
 handles.yawSetpoint = str2double(get(hObject, 'String'));
 guidata(hObject, handles);
+
 
 % --- Executes during object creation, after setting all properties.
 function tbxYaw_CreateFcn(hObject, eventdata, handles)
@@ -211,7 +319,9 @@ if ~strcmp(handles.serialStatus,'open')
     warndlg('No Connection to vehicle');
 else
 %     handles.rollSetpoint = str2double(get(hObject.tbxRoll, 'String'));
-    buffer = strcat(num2str(handles.rollSetpoint),'p789\n');
+    buffer = strcat('a', num2str_norm(handles.rollSetpoint * 100 ,5), ...
+                    'b', num2str_norm(handles.pitchSetpoint * 100, 5),...
+                    'c', num2str_norm(handles.yawSetpoint * 100, 5));
     disp(num2str(handles.rollSetpoint));
     global mSerial;
     fprintf(mSerial,'%s', buffer);
@@ -329,11 +439,14 @@ function btnSendPos_Callback(hObject, eventdata, handles)
 % hObject    handle to btnSendPos (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-set(handles.tbxNorthFb, 'string', -890);
+
 if ~strcmp(handles.serialStatus,'open')
     msbx = warndlg('No Connection to vehicle');
 else
-    
+    buffer = strcat('n', num2str_norm(handles.northSetpoint, 5), ...
+        'e', num2str_norm(handles.eastSetpoint, 5));
+    global mSerial;
+    fprintf(mSerial,'%s', buffer);
 end
 
 
@@ -348,8 +461,6 @@ handles.northSetpoint = 0;
 handles.eastSetpoint = 0;
 guidata(hObject, handles);
 
-
-    
 
 
 function tbxComPort_Callback(hObject, eventdata, handles)
@@ -393,10 +504,11 @@ function btnConnect_Callback(hObject, eventdata, handles)
         mSerial.BytesAvailableFcnCount = 42;
         mSerial.BytesAvailableFcnMode = 'byte';
         guidata(hObject, handles);
-        
+
         status = get_param(bdroot,'simulationstatus');
         if strcmp(status,'stopped')
-            set_param(bdroot,'simulationcommand','start')
+            set_param(bdroot,'simulationcommand','start');
+            set_param([bdroot '/kickoff'],'Value', num2str(0));
         end
 %         assignin('base','gs_handles',handles)
        
@@ -415,10 +527,29 @@ function btnConnect_Callback(hObject, eventdata, handles)
         
         status = get_param(bdroot,'simulationstatus');
         if strcmp(status,'running') 
-            set_param(bdroot, 'SimulationCommand', 'Stop')
+            set_param(bdroot, 'SimulationCommand', 'Stop');
         end
 
     end
+    
+    % FT controller
+    global ftSerial;
+    ftSerial = serial('COM7');
+    set(ftSerial, 'BaudRate', 57600);
+    set(ftSerial, 'FlowControl', 'software');
+    try 
+        if ~strcmp(handles.ftSerialStatus, 'open')
+            fopen(ftSerial);
+        end
+        handles.ftSerialStatus = 'open';
+        guidata(hObject, handles);
+        msgbox('FT connected');
+    catch
+        warndlg('Connection to FT sensor system failed');
+        handles.ftSerialStatus = 'closed';
+        guidata(hObject, handles);
+    end
+
     guidata(hObject, handles);
     
 function update_feedback(hObject,eventdata)
@@ -481,13 +612,30 @@ function btnDisconnect_Callback(hObject, eventdata, handles)
         set_param(bdroot, 'SimulationCommand', 'Stop')
     end
 
+    % FT controller
+    global ftTimer;
+    if strcmp(handles.ftTimerStatus, 'running')
+        stop(ftTimer);
+    end
+    handles.ftTimerStatus = 'stopped';
+    
+    global ftSerial;
+    if strcmp(handles.ftSerialStatus, 'open')...
+            && ~strcmp(handles.ftTimerStatus, 'running')
+        fprintf(ftSerial, '%s', char(13));
+        fclose(ftSerial); 
+    end
+    handles.ftSerialStatus = 'closed';
+    delete(ftSerial); 
+    handles.ftSerialStatus = 'none';
+    handles.ftStatus = 'none';    
+    %
+    
     set(handles.btnConnect,'visible','on');
     set(handles.btnDisconnect,'visible','off');
     set(handles.btnSync,'visible','off');
     guidata(hObject, handles);
     
-
-
 
 function tbxRollFb_Callback(hObject, eventdata, handles)
 % hObject    handle to tbxRollFb (see GCBO)
@@ -565,6 +713,13 @@ function figure1_DeleteFcn(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 global mSerial;
+global mTimer;
+
+stop(mTimer);
+delete(mTimer);
+clear mTimer;
+handles.timerStatus = 'none';
+
 if strcmp(handles.serialStatus, 'open')
     warndlg('The serial port will be closed automatically.');
     fclose(mSerial); 
@@ -572,26 +727,49 @@ end
 delete(mSerial); 
 clear mSerial;
 
-global mTimer;
-stop(mTimer);
-delete(mTimer);
-clear mTimer;
-handles.timerStatus = 'none';
-
 status = get_param(bdroot,'simulationstatus');
 if strcmp(status,'running') 
     set_param(bdroot, 'SimulationCommand', 'Stop')
 end
 
+% FT controller
+global ftTimer;
+    if strcmp(handles.ftTimerStatus, 'running')
+        stop(ftTimer);
+    end
+    delete(ftTimer);
+    handles.ftTimerStatus = 'stopped';
+    
+    global ftSerial;
+    if strcmp(handles.ftSerialStatus, 'open')
+        fclose(ftSerial); 
+    end
+    handles.ftSerialStatus = 'closed';
+    %     end
+    delete(ftSerial); 
+    handles.ftSerialStatus = 'none';
+    guidata(hObject, handles);
 
+    
 % --- Executes on button press in btnSync.
 function btnSync_Callback(hObject, eventdata, handles)
 % hObject    handle to btnSync (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
+set_param([bdroot '/kickoff'],'Value', num2str(1));
+global mTimer;
 if strcmp(handles.timerStatus, 'stopped')
-    global mTimer;
     start(mTimer);
     handles.timerStatus = 'running';
-    guidata(hObject, handles);
+%     guidata(hObject, handles);
 end
+
+% FT controller
+global ftTimer;
+if ~strcmp(handles.ftTimerStatus, 'running')
+    start(ftTimer);
+end
+handles.ftTimerStatus = 'running';
+guidata(hObject, handles);
+

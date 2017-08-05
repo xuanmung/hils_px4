@@ -288,10 +288,6 @@ int main(int argc, char **argv){
 			  }
 		  }
 
-		  
-		  //std::string receiver = mSerial.read(8);
-		  
-		  //ROS_INFO_STREAM("Receiver: " << receiver);
 	  }
 	  
 	  //Publishing the estimated position to the appropriate topic
