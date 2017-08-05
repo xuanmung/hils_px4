@@ -7,7 +7,7 @@ Model {
     NumRootInports	    0
     NumRootOutports	    0
     ParameterArgumentNames  ""
-    ComputedModelVersion    "1.1737"
+    ComputedModelVersion    "1.1741"
     NumModelReferences	    0
     NumTestPointedSignals   0
   }
@@ -42,7 +42,7 @@ Model {
       $ObjectID		      3
       $ClassName	      "Simulink.WindowInfo"
       IsActive		      [1]
-      Location		      [-8.0, 0.0, 932.0, 744.0]
+      Location		      [-8.0, 0.0, 739.0, 744.0]
       Object {
 	$PropName		"ModelBrowserInfo"
 	$ObjectID		4
@@ -67,9 +67,9 @@ Model {
 	  IsActive		  [1]
 	  ViewObjType		  "SimulinkTopLevel"
 	  LoadSaveID		  "0"
-	  Extents		  [882.0, 567.0]
-	  ZoomFactor		  [0.90370370370370356]
-	  Offset		  [199.50819672131138, 17.790983606557347]
+	  Extents		  [689.0, 567.0]
+	  ZoomFactor		  [1.0]
+	  Offset		  [201.0, 75.0]
 	}
 	Object {
 	  $ObjectID		  7
@@ -78,16 +78,16 @@ Model {
 	  LoadSaveID		  "8577"
 	  Extents		  [882.0, 567.0]
 	  ZoomFactor		  [0.8]
-	  Offset		  [337.7952391009548, 674.56807903117056]
+	  Offset		  [337.79523910095486, 674.56807903117056]
 	}
 	Object {
 	  $ObjectID		  8
 	  IsActive		  [0]
 	  ViewObjType		  "SimulinkSubsys"
 	  LoadSaveID		  "9501"
-	  Extents		  [882.0, 567.0]
-	  ZoomFactor		  [0.99999999999999978]
-	  Offset		  [-230.35012290560505, -114.29192740926163]
+	  Extents		  [689.0, 567.0]
+	  ZoomFactor		  [0.8]
+	  Offset		  [-308.91710639608209, -303.59297757921468]
 	}
 	Object {
 	  $ObjectID		  9
@@ -103,9 +103,9 @@ Model {
 	  IsActive		  [0]
 	  ViewObjType		  "SimulinkSubsys"
 	  LoadSaveID		  "8567"
-	  Extents		  [882.0, 567.0]
-	  ZoomFactor		  [0.8]
-	  Offset		  [186.75451973541385, -56.503775645001042]
+	  Extents		  [689.0, 567.0]
+	  ZoomFactor		  [1.75]
+	  Offset		  [1064.1442371763787, 348.52019763371436]
 	}
 	Object {
 	  $ObjectID		  11
@@ -126,9 +126,9 @@ Model {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "Xuan Mung"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Tue Aug 01 16:52:49 2017"
-  RTWModifiedTimeStamp	  423506719
-  ModelVersionFormat	  "1.%<AutoIncrement:1737>"
+  LastModifiedDate	  "Sat Aug 05 16:04:45 2017"
+  RTWModifiedTimeStamp	  423849699
+  ModelVersionFormat	  "1.%<AutoIncrement:1741>"
   ConfigurationManager	  "none"
   SampleTimeColors	  off
   SampleTimeAnnotations	  off
@@ -1775,7 +1775,7 @@ Model {
   }
   System {
     Name		    "HILS_Px4"
-    Location		    [-8, 0, 924, 744]
+    Location		    [-8, 0, 731, 744]
     Open		    on
     ModelBrowserVisibility  off
     ModelBrowserWidth	    200
@@ -1787,9 +1787,9 @@ Model {
     TiledPaperMargins	    [1.270000, 1.270000, 1.270000, 1.270000]
     TiledPageScale	    1
     ShowPageBoundaries	    off
-    ZoomFactor		    "90"
+    ZoomFactor		    "100"
     ReportName		    "simulink-default.rpt"
-    SIDHighWatermark	    "10307"
+    SIDHighWatermark	    "10308"
     Block {
       BlockType		      SubSystem
       Name		      "Data_In"
@@ -1804,7 +1804,7 @@ Model {
       Variant		      off
       System {
 	Name			"Data_In"
-	Location		[-8, 0, 924, 744]
+	Location		[-8, 0, 731, 744]
 	Open			on
 	ModelBrowserVisibility	off
 	ModelBrowserWidth	200
@@ -2043,7 +2043,7 @@ Model {
       Variant		      off
       System {
 	Name			"Data_Out"
-	Location		[-8, 0, 924, 744]
+	Location		[-8, 0, 731, 744]
 	Open			off
 	ModelBrowserVisibility	off
 	ModelBrowserWidth	200
@@ -2055,7 +2055,7 @@ Model {
 	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
 	TiledPageScale		1
 	ShowPageBoundaries	off
-	ZoomFactor		"250"
+	ZoomFactor		"267"
 	Block {
 	  BlockType		  Inport
 	  Name			  "Position"
@@ -2274,7 +2274,7 @@ Model {
       Position		      [300, 215, 330, 245]
       ZOrder		      3464
       ShowName		      off
-      Gain		      "-1.1"
+      Gain		      "-1.3"
       ParamDataTypeStr	      "Inherit: Inherit via internal rule"
       OutDataTypeStr	      "Inherit: Inherit via internal rule"
       SaturateOnIntegerOverflow	off
@@ -2293,7 +2293,7 @@ Model {
       Variant		      off
       System {
 	Name			"Psuedo Positioning"
-	Location		[-8, 0, 924, 744]
+	Location		[-8, 0, 731, 744]
 	Open			on
 	ModelBrowserVisibility	off
 	ModelBrowserWidth	200
@@ -2305,7 +2305,7 @@ Model {
 	TiledPaperMargins	[1.270000, 1.270000, 1.270000, 1.270000]
 	TiledPageScale		1
 	ShowPageBoundaries	off
-	ZoomFactor		"100"
+	ZoomFactor		"80"
 	Block {
 	  BlockType		  Inport
 	  Name			  "Fz"
@@ -2352,7 +2352,7 @@ Model {
 	  Variant		  off
 	  System {
 	    Name		    "Att To Pos"
-	    Location		    [-8, 0, 924, 744]
+	    Location		    [-8, 0, 731, 744]
 	    Open		    on
 	    ModelBrowserVisibility  off
 	    ModelBrowserWidth	    200
@@ -2364,7 +2364,7 @@ Model {
 	    TiledPaperMargins	    [0.500000, 0.500000, 0.500000, 0.500000]
 	    TiledPageScale	    1
 	    ShowPageBoundaries	    off
-	    ZoomFactor		    "80"
+	    ZoomFactor		    "175"
 	    Block {
 	      BlockType		      Inport
 	      Name		      "Fz"
@@ -2417,7 +2417,7 @@ Model {
 	      SID		      "8996"
 	      Position		      [1335, 496, 1365, 514]
 	      ZOrder		      3345
-	      Value		      "10"
+	      Value		      "-10"
 	    }
 	    Block {
 	      BlockType		      Constant
@@ -2615,7 +2615,7 @@ Model {
 	      Variant		      off
 	      System {
 		Name			"Position Estimation"
-		Location		[-8, 0, 924, 744]
+		Location		[-8, 0, 731, 744]
 		Open			on
 		ModelBrowserVisibility	off
 		ModelBrowserWidth	200
@@ -3222,7 +3222,7 @@ Model {
 	      Variant		      off
 	      System {
 		Name			"Velocity Estimation"
-		Location		[-8, 0, 924, 744]
+		Location		[-8, 0, 731, 744]
 		Open			on
 		ModelBrowserVisibility	off
 		ModelBrowserWidth	200
@@ -4751,6 +4751,19 @@ Model {
 	  TagVisibility		  "global"
 	}
 	Block {
+	  BlockType		  Gain
+	  Name			  "Gain"
+	  SID			  "10308"
+	  Position		  [125, 10, 155, 40]
+	  ZOrder		  3346
+	  BlockMirror		  on
+	  NamePlacement		  "alternate"
+	  Gain			  "-1"
+	  ParamDataTypeStr	  "Inherit: Inherit via internal rule"
+	  OutDataTypeStr	  "Inherit: Inherit via internal rule"
+	  SaturateOnIntegerOverflow off
+	}
+	Block {
 	  BlockType		  Goto
 	  Name			  "Goto"
 	  SID			  "8648"
@@ -4848,7 +4861,7 @@ Model {
 	  Branch {
 	    ZOrder		    602
 	    Points		    [0, -80]
-	    DstBlock		    "Position"
+	    DstBlock		    "Gain"
 	    DstPort		    1
 	  }
 	  Branch {
@@ -4929,6 +4942,13 @@ Model {
 	  SrcBlock		  "From1"
 	  SrcPort		  1
 	  DstBlock		  "Terminator1"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  633
+	  SrcBlock		  "Gain"
+	  SrcPort		  1
+	  DstBlock		  "Position"
 	  DstPort		  1
 	}
       }
@@ -5050,7 +5070,7 @@ Model {
       Position		      [300, 275, 330, 305]
       ZOrder		      3466
       ShowName		      off
-      Gain		      "-1.07"
+      Gain		      "-2.92"
       ParamDataTypeStr	      "Inherit: Inherit via internal rule"
       OutDataTypeStr	      "Inherit: Inherit via internal rule"
       SaturateOnIntegerOverflow	off
@@ -5086,7 +5106,7 @@ Model {
       Position		      [300, 245, 330, 275]
       ZOrder		      3465
       ShowName		      off
-      Gain		      "-1.1"
+      Gain		      "-1.3"
       ParamDataTypeStr	      "Inherit: Inherit via internal rule"
       OutDataTypeStr	      "Inherit: Inherit via internal rule"
       SaturateOnIntegerOverflow	off
@@ -5098,7 +5118,7 @@ Model {
       Position		      [300, 305, 330, 335]
       ZOrder		      3467
       ShowName		      off
-      Gain		      "-145.02"
+      Gain		      "-138.46"
       ParamDataTypeStr	      "Inherit: Inherit via internal rule"
       OutDataTypeStr	      "Inherit: Inherit via internal rule"
       SaturateOnIntegerOverflow	off
