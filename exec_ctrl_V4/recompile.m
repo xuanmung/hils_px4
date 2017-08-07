@@ -1,0 +1,1 @@
+mex sfun_exec_contr.c -lmwlapack -lmwblas
