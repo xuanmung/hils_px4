@@ -179,7 +179,6 @@ function ftTimerCallback(hObject, eventdata, handles)
         
     end
     guidata(mhObject, handles);
-
     
 %
 function timerCallback(hObject, eventdata, handles)
