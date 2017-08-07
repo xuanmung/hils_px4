@@ -22,7 +22,6 @@
 
 
 int				phy, theta, psy, p, q, r;
-//std::vector<uint8_t> buffer;
 std::string			mBuffer;
 std::ostringstream		mOss;
 serial::Serial			mSerial; 
@@ -35,6 +34,9 @@ int rad2cdeg(double rad){
  return (int) (rad * 180.0)/PI*100;
 }
 
+double cdeg2rad(double cdeg){
+	return (cdeg/100.0 * PI / 180.0);
+}
 
 //this is the function subscribing the IMU data
 void imuMessageReceived(const sensor_msgs::Imu& msg){ 
@@ -121,11 +123,14 @@ std::string norm_str(int num, uint normSize){
 
 
 int main(int argc, char **argv){
-	ros::init(argc, argv, "subscribe_to_Imu");
+	ros::init(argc, argv, "hils_px4");
 	ros::NodeHandle nh;
 	
 	ros::Subscriber sub = nh.subscribe("mavros/imu/data", 10, 
 		&imuMessageReceived);
+		
+	ros::Publisher spAttPublisher = nh.advertise<geometry_msgs::PoseStamped>(
+		"mavros/setpoint_attitude/attitude", 100);
 		
 	ros::Publisher estPosPublisher = nh.advertise<geometry_msgs::PoseStamped>(
 		"mavros/vision_pose/pose", 100);
@@ -158,7 +163,7 @@ int main(int argc, char **argv){
 	  
 	  mSerial.write("a");
 	  mOss << phy;
-	  ROS_INFO_STREAM("Phy = " << (std::string)mOss.str());
+	  //ROS_INFO_STREAM("Phy = " << (std::string)mOss.str());
 	  //mSerial.write((std::string)mOss.str());
 	  mSerial.write(norm_str(phy, 5));
 	  mOss.str("");
@@ -166,35 +171,35 @@ int main(int argc, char **argv){
 	  
 	  mSerial.write("b");
 	  mOss << theta;
-	  ROS_INFO_STREAM("Theta = " << (std::string)mOss.str());
+	  //ROS_INFO_STREAM("Theta = " << (std::string)mOss.str());
 	  mSerial.write(norm_str(theta, 5));
 	  mOss.str("");
 	  mOss.clear();
 
   	  mSerial.write("c");
 	  mOss << psy;
-	  ROS_INFO_STREAM("Psy = " << (std::string)mOss.str());
+	  //ROS_INFO_STREAM("Psy = " << (std::string)mOss.str());
 	  mSerial.write(norm_str(psy, 5));
 	  mOss.str("");
 	  mOss.clear();
 	  
 	  mSerial.write("p");
 	  mOss << p;
-	  ROS_INFO_STREAM("p = " << (std::string)mOss.str());
+	  //ROS_INFO_STREAM("p = " << (std::string)mOss.str());
 	  mSerial.write(norm_str(p, 5));
 	  mOss.str("");
 	  mOss.clear();
 	  
 	  mSerial.write("q");
 	  mOss << q;
-	  ROS_INFO_STREAM("q = " << (std::string)mOss.str());
+	  //ROS_INFO_STREAM("q = " << (std::string)mOss.str());
 	  mSerial.write(norm_str(q, 5));
 	  mOss.str("");
 	  mOss.clear();
 	  
 	  mSerial.write("r");
 	  mOss << r;
-	  ROS_INFO_STREAM("r = " << (std::string)mOss.str());
+	  //ROS_INFO_STREAM("r = " << (std::string)mOss.str());
 	  mSerial.write(norm_str(r, 5));
 	  mOss.str("");
 	  mOss.clear();
@@ -202,7 +207,7 @@ int main(int argc, char **argv){
 	  //receiving data sent from Matlab GUI (mGCS)
 	  if (mSerial.available()){
 		  
-		  ROS_INFO("Ting-ting!!!");
+		  //ROS_INFO("Ting-ting!!!");
 		  
 		  std::stringstream ss;
 		  
@@ -227,7 +232,10 @@ int main(int argc, char **argv){
 				ss >> spAtt.x;
 				ss.str("");
 				ss.clear();
+				
 				ROS_INFO_STREAM("Roll: " << spAtt.x);
+				
+				spAtt.x = cdeg2rad(spAtt.x);
 			  }
 	  
 			  else if (flag == (std::string)"b"){
@@ -236,7 +244,10 @@ int main(int argc, char **argv){
 				ss >> spAtt.y;
 				ss.str("");
 				ss.clear();
+				
 				ROS_INFO_STREAM("Pitch: " << spAtt.y);
+				
+				spAtt.y = cdeg2rad(spAtt.y);
 			  }
 			  else if (flag == (std::string)"c"){
 				receiverBuff = mSerial.read(6);
@@ -244,7 +255,10 @@ int main(int argc, char **argv){
 				ss >> spAtt.z;
 				ss.str("");
 				ss.clear();
+				
 				ROS_INFO_STREAM("Yaw: " << spAtt.z);
+				
+				spAtt.z = cdeg2rad(spAtt.z);
 			  }
 			  else if (flag == (std::string)"n"){
 				receiverBuff = mSerial.read(6);
@@ -289,6 +303,25 @@ int main(int argc, char **argv){
 		  }
 
 	  }
+	  
+	  tf::Quaternion		tfQuat, m1;
+	  geometry_msgs::Quaternion	msgQuat;
+	  tfQuat.setRPY(spAtt.x, spAtt.y, spAtt.z);
+	  //tfQuat.setRPY(PI/4.0, -PI/8.0, PI/2.0);
+	  quaternionTFToMsg(tfQuat, msgQuat);
+	  //quaternionMsgToTF(msgQuat, m1);
+	  //double xx, yy, zz;
+	  //tf::Matrix3x3(m1).getRPY(xx, yy, zz);
+	  //ROS_INFO_STREAM("R: " << xx << " P: " << yy << " Y: " << zz);
+	  
+  	  //Publishing the setpoint attitude to the appropriate topic
+	  geometry_msgs::PoseStamped spAttMsg;
+	  //spAttMsg.pose.position.x = spPos.x;
+	  //spAttMsg.pose.position.y = spPos.y;
+	  //spAttMsg.pose.position.z = spPos.z;
+	  spAttMsg.pose.orientation = msgQuat;
+	  spAttPublisher.publish(spAttMsg);
+		
 	  
 	  //Publishing the estimated position to the appropriate topic
 	  geometry_msgs::PoseStamped estPosMsg;
