@@ -7,7 +7,7 @@ Model {
     NumRootInports	    0
     NumRootOutports	    0
     ParameterArgumentNames  ""
-    ComputedModelVersion    "1.1"
+    ComputedModelVersion    "1.2"
     NumModelReferences	    0
     NumTestPointedSignals   0
   }
@@ -69,7 +69,7 @@ Model {
 	  LoadSaveID		  "0"
 	  Extents		  [689.0, 567.0]
 	  ZoomFactor		  [0.59999999999999987]
-	  Offset		  [114.21492057488649, -112.64208270297542]
+	  Offset		  [114.21492057488672, -112.64208270297542]
 	}
 	Object {
 	  $ObjectID		  7
@@ -126,9 +126,9 @@ Model {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "Xuan Mung"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Mon Aug 07 18:03:49 2017"
-  RTWModifiedTimeStamp	  424029827
-  ModelVersionFormat	  "1.%<AutoIncrement:1>"
+  LastModifiedDate	  "Mon Aug 07 18:21:18 2017"
+  RTWModifiedTimeStamp	  424030708
+  ModelVersionFormat	  "1.%<AutoIncrement:2>"
   ConfigurationManager	  "none"
   SampleTimeColors	  off
   SampleTimeAnnotations	  off
@@ -2274,6 +2274,7 @@ Model {
       Position		      [300, 215, 330, 245]
       ZOrder		      3464
       ShowName		      off
+      Gain		      "-0.21"
       ParamDataTypeStr	      "Inherit: Inherit via internal rule"
       OutDataTypeStr	      "Inherit: Inherit via internal rule"
       SaturateOnIntegerOverflow	off
@@ -5083,6 +5084,7 @@ Model {
       Position		      [300, 275, 330, 305]
       ZOrder		      3466
       ShowName		      off
+      Gain		      "-1.18"
       ParamDataTypeStr	      "Inherit: Inherit via internal rule"
       OutDataTypeStr	      "Inherit: Inherit via internal rule"
       SaturateOnIntegerOverflow	off
@@ -5118,6 +5120,7 @@ Model {
       Position		      [300, 245, 330, 275]
       ZOrder		      3465
       ShowName		      off
+      Gain		      "-0.21"
       ParamDataTypeStr	      "Inherit: Inherit via internal rule"
       OutDataTypeStr	      "Inherit: Inherit via internal rule"
       SaturateOnIntegerOverflow	off
@@ -5129,6 +5132,7 @@ Model {
       Position		      [300, 305, 330, 335]
       ZOrder		      3467
       ShowName		      off
+      Gain		      "-139.31"
       ParamDataTypeStr	      "Inherit: Inherit via internal rule"
       OutDataTypeStr	      "Inherit: Inherit via internal rule"
       SaturateOnIntegerOverflow	off
