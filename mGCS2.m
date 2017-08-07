@@ -88,10 +88,9 @@ mTimer = timer('executionMode','fixedRate', 'period', 0.02, ...
 handles.timerStatus = 'stopped';
 
 % FT controller
-<<<<<<< HEAD
-=======
+
 global ftSerial;
->>>>>>> 6fc6225aa03ce4fb08810c10a39599127c26510f
+
 handles.ftSerialStatus = 'none';
 handles.ftBuffer = '';
 handles.ftData = zeros(6, 1);
@@ -154,7 +153,7 @@ function ftTimerCallback(hObject, eventdata, handles)
                 
 %                 dec2hex(ftBuffer);
                 if strcmp(ftBuffer(1),'0') && comma == 6
-                    ftBuffer
+% %                     ftBuffer
                     commaPtr = [];
                     ftBuffLen = length(ftBuffer);
                     for i=1:1:ftBuffLen
@@ -186,17 +185,6 @@ function ftTimerCallback(hObject, eventdata, handles)
 %
 function timerCallback(hObject, eventdata, handles)
     handles = guidata(handles.figure1);
-
-<<<<<<< HEAD
-    set_param([bdroot '/Fzin'],'Gain', num2str(handles.rollFb));
-    set_param([bdroot '/rollin'],'Gain', num2str(handles.rollFb));
-    set_param([bdroot '/pitchin'],'Gain', num2str(handles.pitchFb));
-    set_param([bdroot '/yawin'],'Gain', num2str(handles.yawFb));
-    set_param([bdroot '/pin'],'Gain', num2str(handles.pFb));
-    set_param([bdroot '/qin'],'Gain', num2str(handles.qFb));
-    set_param([bdroot '/rin'],'Gain', num2str(handles.rFb));
-    
-=======
     try
         set_param([bdroot '/Fzin'],'Gain', num2str(handles.rollFb));
         set_param([bdroot '/rollin'],'Gain', num2str(handles.rollFb));
@@ -207,7 +195,6 @@ function timerCallback(hObject, eventdata, handles)
         set_param([bdroot '/rin'],'Gain', num2str(handles.rFb));
     catch
     end
->>>>>>> 6fc6225aa03ce4fb08810c10a39599127c26510f
     
     status = get_param(bdroot,'simulationstatus');
 %     if strcmp(status,'running')    
@@ -217,17 +204,6 @@ function timerCallback(hObject, eventdata, handles)
 %         
     set(handles.tbxNorthFb, 'String', num2str(northFb));
     set(handles.tbxEastFb, 'String', num2str(eastFb));
-<<<<<<< HEAD
-    global mSerial;
-    if strcmp(handles.serialStatus,'open') ...
-        && strcmp(handles.timerStatus, 'running')
-        buffer = strcat('x','123');
-%         buffer = strcat('x', num2str_norm(northFb, 5), ...
-%             'y', num2str_norm(eastFb, 5), 'h', num2str_norm(hFb, 5));
-% %             disp(num2str(handles.rollSetpoint));
-        fprintf(mSerial,'%s', buffer);
-        tingting = 5
-=======
     
     global mSerial;
     if strcmp(handles.serialStatus,'open') ...
@@ -236,8 +212,6 @@ function timerCallback(hObject, eventdata, handles)
             'y', num2str_norm(eastFb, 5), 'h', num2str_norm(hFb, 5));
 % %             disp(num2str(handles.rollSetpoint));
         fprintf(mSerial,'%s', buffer);
-
->>>>>>> 6fc6225aa03ce4fb08810c10a39599127c26510f
     end
 
     handles.northFb = northFb;
@@ -535,16 +509,11 @@ function btnConnect_Callback(hObject, eventdata, handles)
 
         status = get_param(bdroot,'simulationstatus');
         if strcmp(status,'stopped')
-<<<<<<< HEAD
-            set_param(bdroot,'simulationcommand','start');
-            set_param([bdroot '/kickoff'],'Value', num2str(0));
-=======
             try
                 set_param(bdroot,'simulationcommand','start');
                 set_param([bdroot '/kickoff'],'Value', num2str(0));
             catch
             end
->>>>>>> 6fc6225aa03ce4fb08810c10a39599127c26510f
         end
 %         assignin('base','gs_handles',handles)
        
@@ -563,14 +532,10 @@ function btnConnect_Callback(hObject, eventdata, handles)
         
         status = get_param(bdroot,'simulationstatus');
         if strcmp(status,'running') 
-<<<<<<< HEAD
-            set_param(bdroot, 'SimulationCommand', 'Stop');
-=======
             try
                 set_param(bdroot, 'SimulationCommand', 'Stop');
             catch
             end
->>>>>>> 6fc6225aa03ce4fb08810c10a39599127c26510f
         end
 
     end
@@ -662,12 +627,7 @@ function btnDisconnect_Callback(hObject, eventdata, handles)
         catch 
         end
     end
-<<<<<<< HEAD
 
-=======
-    
-    
->>>>>>> 6fc6225aa03ce4fb08810c10a39599127c26510f
     % FT controller
     global ftTimer;
     if strcmp(handles.ftTimerStatus, 'running')
@@ -816,20 +776,16 @@ function btnSync_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-<<<<<<< HEAD
-set_param([bdroot '/kickoff'],'Value', num2str(1));
-=======
 try
     set_param([bdroot '/kickoff'],'Value', num2str(1));
 catch 
 end
->>>>>>> 6fc6225aa03ce4fb08810c10a39599127c26510f
+
 global mTimer;
 if strcmp(handles.timerStatus, 'stopped')
     start(mTimer);
     handles.timerStatus = 'running';
 %     guidata(hObject, handles);
-<<<<<<< HEAD
 end
 
 % FT controller
@@ -837,15 +793,6 @@ global ftTimer;
 if ~strcmp(handles.ftTimerStatus, 'running')
     start(ftTimer);
 end
-=======
-end
-
-% FT controller
-global ftTimer;
-if ~strcmp(handles.ftTimerStatus, 'running')
-    start(ftTimer);
-end
->>>>>>> 6fc6225aa03ce4fb08810c10a39599127c26510f
 handles.ftTimerStatus = 'running';
 guidata(hObject, handles);
 

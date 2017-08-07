@@ -7,11 +7,7 @@ Model {
     NumRootInports	    0
     NumRootOutports	    0
     ParameterArgumentNames  ""
-<<<<<<< HEAD
-    ComputedModelVersion    "1.1741"
-=======
-    ComputedModelVersion    "1.1743"
->>>>>>> 6fc6225aa03ce4fb08810c10a39599127c26510f
+    ComputedModelVersion    "1.1"
     NumModelReferences	    0
     NumTestPointedSignals   0
   }
@@ -72,13 +68,8 @@ Model {
 	  ViewObjType		  "SimulinkTopLevel"
 	  LoadSaveID		  "0"
 	  Extents		  [689.0, 567.0]
-<<<<<<< HEAD
-	  ZoomFactor		  [1.0]
-	  Offset		  [201.0, 75.0]
-=======
 	  ZoomFactor		  [0.59999999999999987]
-	  Offset		  [114.21492057488626, -112.64208270297542]
->>>>>>> 6fc6225aa03ce4fb08810c10a39599127c26510f
+	  Offset		  [114.21492057488649, -112.64208270297542]
 	}
 	Object {
 	  $ObjectID		  7
@@ -135,15 +126,9 @@ Model {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "Xuan Mung"
   ModifiedDateFormat	  "%<Auto>"
-<<<<<<< HEAD
-  LastModifiedDate	  "Sat Aug 05 16:04:45 2017"
-  RTWModifiedTimeStamp	  423849699
-  ModelVersionFormat	  "1.%<AutoIncrement:1741>"
-=======
-  LastModifiedDate	  "Mon Aug 07 17:25:22 2017"
-  RTWModifiedTimeStamp	  424025549
-  ModelVersionFormat	  "1.%<AutoIncrement:1743>"
->>>>>>> 6fc6225aa03ce4fb08810c10a39599127c26510f
+  LastModifiedDate	  "Mon Aug 07 18:03:49 2017"
+  RTWModifiedTimeStamp	  424029827
+  ModelVersionFormat	  "1.%<AutoIncrement:1>"
   ConfigurationManager	  "none"
   SampleTimeColors	  off
   SampleTimeAnnotations	  off
@@ -1802,15 +1787,9 @@ Model {
     TiledPaperMargins	    [1.270000, 1.270000, 1.270000, 1.270000]
     TiledPageScale	    1
     ShowPageBoundaries	    off
-<<<<<<< HEAD
-    ZoomFactor		    "100"
-    ReportName		    "simulink-default.rpt"
-    SIDHighWatermark	    "10308"
-=======
     ZoomFactor		    "60"
     ReportName		    "simulink-default.rpt"
-    SIDHighWatermark	    "10311"
->>>>>>> 6fc6225aa03ce4fb08810c10a39599127c26510f
+    SIDHighWatermark	    "10467"
     Block {
       BlockType		      SubSystem
       Name		      "Data_In"
@@ -2125,7 +2104,7 @@ Model {
 	    TiledPageScale	    1
 	    ShowPageBoundaries	    off
 	    ZoomFactor		    "100"
-	    SIDHighWatermark	    "18"
+	    SIDHighWatermark	    "22"
 	    Block {
 	      BlockType		      Inport
 	      Name		      "u"
@@ -2295,11 +2274,6 @@ Model {
       Position		      [300, 215, 330, 245]
       ZOrder		      3464
       ShowName		      off
-<<<<<<< HEAD
-      Gain		      "-1.3"
-=======
-      Gain		      "-0.17"
->>>>>>> 6fc6225aa03ce4fb08810c10a39599127c26510f
       ParamDataTypeStr	      "Inherit: Inherit via internal rule"
       OutDataTypeStr	      "Inherit: Inherit via internal rule"
       SaturateOnIntegerOverflow	off
@@ -2700,7 +2674,7 @@ Model {
 		    TiledPageScale	    1
 		    ShowPageBoundaries	    off
 		    ZoomFactor		    "100"
-		    SIDHighWatermark	    "56"
+		    SIDHighWatermark	    "66"
 		    Block {
 		    BlockType		    Inport
 		    Name		    "cPhy"
@@ -4983,7 +4957,7 @@ Model {
       Name		      "Scope"
       SID		      "10310"
       Ports		      [1]
-      Position		      [795, 119, 825, 151]
+      Position		      [690, 119, 720, 151]
       ZOrder		      3487
       ScopeSpecificationString "C++SS(StrPVP('Location','[136, 269, 695, 919]'),StrPVP('Open','off'),MxPVP('AxesTitles"
       "',24,'struct(''axes1'',''%<SignalLabel>'')'),StrPVP('YMin','0'),StrPVP('YMax','3'),StrPVP('DataFormat','Structur"
@@ -5109,11 +5083,6 @@ Model {
       Position		      [300, 275, 330, 305]
       ZOrder		      3466
       ShowName		      off
-<<<<<<< HEAD
-      Gain		      "-2.92"
-=======
-      Gain		      "-1.17"
->>>>>>> 6fc6225aa03ce4fb08810c10a39599127c26510f
       ParamDataTypeStr	      "Inherit: Inherit via internal rule"
       OutDataTypeStr	      "Inherit: Inherit via internal rule"
       SaturateOnIntegerOverflow	off
@@ -5149,11 +5118,6 @@ Model {
       Position		      [300, 245, 330, 275]
       ZOrder		      3465
       ShowName		      off
-<<<<<<< HEAD
-      Gain		      "-1.3"
-=======
-      Gain		      "-0.17"
->>>>>>> 6fc6225aa03ce4fb08810c10a39599127c26510f
       ParamDataTypeStr	      "Inherit: Inherit via internal rule"
       OutDataTypeStr	      "Inherit: Inherit via internal rule"
       SaturateOnIntegerOverflow	off
@@ -5165,11 +5129,6 @@ Model {
       Position		      [300, 305, 330, 335]
       ZOrder		      3467
       ShowName		      off
-<<<<<<< HEAD
-      Gain		      "-138.46"
-=======
-      Gain		      "-145.36"
->>>>>>> 6fc6225aa03ce4fb08810c10a39599127c26510f
       ParamDataTypeStr	      "Inherit: Inherit via internal rule"
       OutDataTypeStr	      "Inherit: Inherit via internal rule"
       SaturateOnIntegerOverflow	off
