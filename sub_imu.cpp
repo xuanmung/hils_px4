@@ -306,6 +306,7 @@ int main(int argc, char **argv){
 	  
 	  tf::Quaternion		tfQuat, m1;
 	  geometry_msgs::Quaternion	msgQuat;
+	  
 	  tfQuat.setRPY(spAtt.x, spAtt.y, spAtt.z);
 	  //tfQuat.setRPY(PI/4.0, -PI/8.0, PI/2.0);
 	  quaternionTFToMsg(tfQuat, msgQuat);
