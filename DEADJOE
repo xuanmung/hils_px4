@@ -1,0 +1,20 @@
+
+*** These modified files were found in JOE when it aborted on Sat Aug  5 16:44:57 2017
+*** JOE was aborted because the terminal closed
+
+*** These modified files were found in JOE when it aborted on Sat Aug  5 17:02:52 2017
+*** JOE was aborted by UNIX signal 1
+
+*** File '(Unnamed)'
+/home/odroid/catkin_ws/src/hils_px4/.git/MERGE_MSG
+
+*** File '/home/odroid/catkin_ws/src/hils_px4/.git/MERGE_MSG'
+Merge https://github.com/xuanmung/hils_px4
+
+# Please enter a commit message to explain why this merge is necessary,
+# especially if it merges an updated upstream into a topic branch.
+#
+# Lines starting with '#' will be ignored, and an empty message aborts
+# the commit.
+
+Just publishers added

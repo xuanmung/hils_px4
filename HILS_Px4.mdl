@@ -7,7 +7,11 @@ Model {
     NumRootInports	    0
     NumRootOutports	    0
     ParameterArgumentNames  ""
+<<<<<<< HEAD
     ComputedModelVersion    "1.1741"
+=======
+    ComputedModelVersion    "1.1743"
+>>>>>>> 6fc6225aa03ce4fb08810c10a39599127c26510f
     NumModelReferences	    0
     NumTestPointedSignals   0
   }
@@ -68,8 +72,13 @@ Model {
 	  ViewObjType		  "SimulinkTopLevel"
 	  LoadSaveID		  "0"
 	  Extents		  [689.0, 567.0]
+<<<<<<< HEAD
 	  ZoomFactor		  [1.0]
 	  Offset		  [201.0, 75.0]
+=======
+	  ZoomFactor		  [0.59999999999999987]
+	  Offset		  [114.21492057488626, -112.64208270297542]
+>>>>>>> 6fc6225aa03ce4fb08810c10a39599127c26510f
 	}
 	Object {
 	  $ObjectID		  7
@@ -126,9 +135,15 @@ Model {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "Xuan Mung"
   ModifiedDateFormat	  "%<Auto>"
+<<<<<<< HEAD
   LastModifiedDate	  "Sat Aug 05 16:04:45 2017"
   RTWModifiedTimeStamp	  423849699
   ModelVersionFormat	  "1.%<AutoIncrement:1741>"
+=======
+  LastModifiedDate	  "Mon Aug 07 17:25:22 2017"
+  RTWModifiedTimeStamp	  424025549
+  ModelVersionFormat	  "1.%<AutoIncrement:1743>"
+>>>>>>> 6fc6225aa03ce4fb08810c10a39599127c26510f
   ConfigurationManager	  "none"
   SampleTimeColors	  off
   SampleTimeAnnotations	  off
@@ -781,7 +796,7 @@ Model {
 	  StartTime		  "0.0"
 	  StopTime		  "inf"
 	  AbsTol		  "auto"
-	  FixedStep		  "0.01"
+	  FixedStep		  "0.02"
 	  InitialStep		  "auto"
 	  MaxNumMinSteps	  "-1"
 	  MaxOrder		  5
@@ -1419,7 +1434,7 @@ Model {
       }
       Name		      "Run on Hardware Configuration"
       CurrentDlgPage	      "Solver"
-      ConfigPrmDlgPosition     [ 426, 130, 1494, 888 ] 
+      ConfigPrmDlgPosition     [ 386, 41, 1546, 989 ] 
     }
     PropName		    "ConfigurationSets"
   }
@@ -1787,9 +1802,15 @@ Model {
     TiledPaperMargins	    [1.270000, 1.270000, 1.270000, 1.270000]
     TiledPageScale	    1
     ShowPageBoundaries	    off
+<<<<<<< HEAD
     ZoomFactor		    "100"
     ReportName		    "simulink-default.rpt"
     SIDHighWatermark	    "10308"
+=======
+    ZoomFactor		    "60"
+    ReportName		    "simulink-default.rpt"
+    SIDHighWatermark	    "10311"
+>>>>>>> 6fc6225aa03ce4fb08810c10a39599127c26510f
     Block {
       BlockType		      SubSystem
       Name		      "Data_In"
@@ -2274,7 +2295,11 @@ Model {
       Position		      [300, 215, 330, 245]
       ZOrder		      3464
       ShowName		      off
+<<<<<<< HEAD
       Gain		      "-1.3"
+=======
+      Gain		      "-0.17"
+>>>>>>> 6fc6225aa03ce4fb08810c10a39599127c26510f
       ParamDataTypeStr	      "Inherit: Inherit via internal rule"
       OutDataTypeStr	      "Inherit: Inherit via internal rule"
       SaturateOnIntegerOverflow	off
@@ -4954,19 +4979,34 @@ Model {
       }
     }
     Block {
+      BlockType		      Scope
+      Name		      "Scope"
+      SID		      "10310"
+      Ports		      [1]
+      Position		      [795, 119, 825, 151]
+      ZOrder		      3487
+      ScopeSpecificationString "C++SS(StrPVP('Location','[136, 269, 695, 919]'),StrPVP('Open','off'),MxPVP('AxesTitles"
+      "',24,'struct(''axes1'',''%<SignalLabel>'')'),StrPVP('YMin','0'),StrPVP('YMax','3'),StrPVP('DataFormat','Structur"
+      "eWithTime'),StrPVP('BlockParamSampleTime','0'),StrPVP('LimitDataPoints','on'),StrPVP('Decimation','1'),StrPVP('B"
+      "lockParamSampleInput','off'),StrPVP('SaveName','ScopeData1'))"
+    }
+    Block {
       BlockType		      Reference
-      Name		      "Real-Time\nSynchronization"
-      SID		      "10303"
-      Ports		      []
-      Position		      [615, 145, 670, 185]
-      ZOrder		      3485
-      LibraryVersion	      "1.141"
-      SourceBlock	      "sldrtlib/Real-Time\nSynchronization"
-      SourceType	      "Simulink Desktop Real-Time Synchronization"
-      SampleTime	      "0.1"
-      MaxMissedTicks	      "10"
-      ShowMissedTicks	      off
-      YieldWhenWaiting	      off
+      Name		      "Simulink\nExecution\nControl"
+      SID		      "10311"
+      Ports		      [0, 1]
+      Position		      [615, 115, 665, 155]
+      ZOrder		      3486
+      LibraryVersion	      "1.14"
+      SourceBlock	      "SimulinkExecutionControl/Simulink\nExecution\nControl"
+      SourceType	      "Simulink Execution Control V2.0"
+      ContentPreviewEnabled   off
+      proc_pri		      "REALTIME_PRIORITY_CLASS"
+      thread_pri	      "THREAD_PRIORITY_HIGHEST"
+      rt_sim		      on
+      factor		      "1"
+      ovrrun		      "Continue execution"
+      Ts		      "0.02"
     }
     Block {
       BlockType		      SubSystem
@@ -5049,7 +5089,6 @@ Model {
       Position		      [215, 220, 245, 240]
       ZOrder		      3471
       ShowName		      off
-      Value		      "0"
     }
     Block {
       BlockType		      Gain
@@ -5070,7 +5109,11 @@ Model {
       Position		      [300, 275, 330, 305]
       ZOrder		      3466
       ShowName		      off
+<<<<<<< HEAD
       Gain		      "-2.92"
+=======
+      Gain		      "-1.17"
+>>>>>>> 6fc6225aa03ce4fb08810c10a39599127c26510f
       ParamDataTypeStr	      "Inherit: Inherit via internal rule"
       OutDataTypeStr	      "Inherit: Inherit via internal rule"
       SaturateOnIntegerOverflow	off
@@ -5106,7 +5149,11 @@ Model {
       Position		      [300, 245, 330, 275]
       ZOrder		      3465
       ShowName		      off
+<<<<<<< HEAD
       Gain		      "-1.3"
+=======
+      Gain		      "-0.17"
+>>>>>>> 6fc6225aa03ce4fb08810c10a39599127c26510f
       ParamDataTypeStr	      "Inherit: Inherit via internal rule"
       OutDataTypeStr	      "Inherit: Inherit via internal rule"
       SaturateOnIntegerOverflow	off
@@ -5118,7 +5165,11 @@ Model {
       Position		      [300, 305, 330, 335]
       ZOrder		      3467
       ShowName		      off
+<<<<<<< HEAD
       Gain		      "-138.46"
+=======
+      Gain		      "-145.36"
+>>>>>>> 6fc6225aa03ce4fb08810c10a39599127c26510f
       ParamDataTypeStr	      "Inherit: Inherit via internal rule"
       OutDataTypeStr	      "Inherit: Inherit via internal rule"
       SaturateOnIntegerOverflow	off
@@ -5346,6 +5397,29 @@ Model {
 	DstBlock		"Data_Out"
 	DstPort			1
       }
+    }
+    Line {
+      ZOrder		      1013
+      SrcBlock		      "Simulink\nExecution\nControl"
+      SrcPort		      1
+      DstBlock		      "Scope"
+      DstPort		      1
+    }
+    Annotation {
+      SID		      "10309"
+      Name		      "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+      "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }"
+      "\n</style></head><body style=\" font-family:'Arial'; font-size:10px; font-weight:400; font-style:normal;\">\n<p "
+      "style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-bloc"
+      "k-indent:0; text-indent:0px;\"><br /></p></body></html>"
+      Position		      [781, 57, 783, 72]
+      InternalMargins	      [0, 0, 0, 0]
+      FixedHeight	      off
+      FixedWidth	      off
+      HorizontalAlignment     "left"
+      VerticalAlignment	      "top"
+      Interpreter	      "rich"
+      ZOrder		      -1
     }
   }
 }
