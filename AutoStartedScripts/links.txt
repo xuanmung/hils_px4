@@ -1,0 +1,7 @@
+
+
+https://forum.odroid.com/viewtopic.php?f=112&t=15306
+
+https://ariandy1.wordpress.com/2013/05/08/running-roscore-and-launching-ros-nodes-as-background-process/
+
+https://answers.ros.org/question/52044/autostart-a-launchfile-afterwhile-boot/

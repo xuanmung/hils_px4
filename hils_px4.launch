@@ -1,0 +1,11 @@
+<launch>
+
+	<node
+		pkg 	= "hils_px4"
+		type 	= "sub_imu"
+		name	= "imu_subscriber"
+		output	= "screen"
+		launch-prefix="xterm -e"
+	/>
+
+</launch>

@@ -1,0 +1,9 @@
+#!/bin/bash
+
+source /home/odroid/catkin_ws/devel/setup.bash
+
+#roslaunch agitr example.launch
+
+sleep 5s
+
+roslaunch hils_px4 hils_px4.launch

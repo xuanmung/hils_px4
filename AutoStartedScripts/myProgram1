@@ -1,0 +1,14 @@
+#!/bin/bash
+
+source /opt/ros/indigo/setup.bash
+#export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:/home/ariandy/youbot_driver:/home/ariandy/applications:/home/ariandy/ros_stacks
+ 
+roslaunch mavros px4.launch fcu_url:=/dev/ttyUSB0:921600
+
+#xterm -e source /home/odroid/catkin_ws/devel/setup.bash
+
+
+#roslaunch hils_px4 hils_px4.launch
+
+
+
