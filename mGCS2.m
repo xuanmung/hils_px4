@@ -93,6 +93,7 @@ handles.ftMng = 0;
 
 handles.btnDownSendAtt = 0;
 handles.btnDownSendPos = 0;
+handles.btnDownResetPosControl = 1;
 
 global mSerial;
 global mTimer;
@@ -195,11 +196,13 @@ function ftTimerCallback(hObject, eventdata, handles)
     %                     guidata(hObject, handles);
                         handles.ftData(1) = handles.ftData(1) / 160.0;
                         handles.ftData(2) = -handles.ftData(2) / 160.0;
-                        handles.ftData(3) = handles.ftData(3) / 160.0;
+                        handles.ftData(3) = - handles.ftData(3) / 160.0;
                         handles.ftData(4) = handles.ftData(4) / 3200.0;
                         handles.ftData(5) = -handles.ftData(5) / 3200.0;
                         handles.ftData(6) = -handles.ftData(6) / 3200.0;
-%                         handles.ftData
+                        handles.ftData(3) = handles.ftData(3)- 12.5;
+                        fckingData = handles.ftData(3);
+                        fckingData
                     end  
                 end
             end        
@@ -219,51 +222,60 @@ function ftTimerCallback(hObject, eventdata, handles)
         fprintf(mSerial,'%s', 's');        
         handles.fbStatus = 'ready';
         
-        %         if handles.btnDownSendAtt == 1
-%             buffer = strcat('a', num2str_norm(handles.rollSetpoint * 100 ,5), ...
-%                 'b', num2str_norm(handles.pitchSetpoint * 100, 5),...
-%                 'c', num2str_norm(handles.yawSetpoint * 100, 5));
-%             fprintf(mSerial,'%s', buffer);
-%             handles.btnDownSendAtt = 0;
-%         end
+        if handles.btnDownResetPosControl == 1
+            buffer = 'r';
+            fprintf(mSerial,'%s', buffer);
+            handles.btnDownResetPosControl = 0;
+        end
         
-%         if handles.btnDownSendPos == 1
-%             buffer = strcat('n', num2str_norm(handles.northSetpoint, 5), ...
-%                 'e', num2str_norm(handles.eastSetpoint, 5), ...
-%                 'd', num2str_norm(0.5, 5));
-%             fprintf(mSerial,'%s', buffer);
-%             handles.btnDownSendPos = 0;
-%         end
+        if handles.btnDownSendAtt == 1
+            buffer = strcat('a', num2str_norm(handles.rollSetpoint * 100 ,5), ...
+                'b', num2str_norm(handles.pitchSetpoint * 100, 5),...
+                'c', num2str_norm(handles.yawSetpoint * 100, 5));
+            fprintf(mSerial,'%s', buffer);
+            handles.btnDownSendAtt = 0;
+        end
+        
+        if handles.btnDownSendPos == 1
+            buffer = strcat('l', num2str_norm(handles.northSetpoint, 5), ...
+                'i', num2str_norm(handles.eastSetpoint, 5), ...
+                'd', num2str_norm(0.9, 5));
+            fprintf(mSerial,'%s', buffer);
+            handles.btnDownSendPos = 0;
+        end
     %%
     elseif (handles.taskMng == 3)
         
         northFb = get_param([bdroot '/Data_Out/xOut'],'UserData');
         eastFb  = get_param([bdroot '/Data_Out/yOut'],'UserData');
-        hFb     = get_param([bdroot '/Data_Out/zOut'],'UserData');      
+        hFb     = 0; %get_param([bdroot '/Data_Out/zOut'],'UserData');      
         
         vx = get_param([bdroot '/Data_Out/vxOut'],'UserData');
         vy = get_param([bdroot '/Data_Out/vyOut'],'UserData');
-        vz = get_param([bdroot '/Data_Out/vzOut'],'UserData');
-        
+%         vz = get_param([bdroot '/Data_Out/vzOut'],'UserData');
+%         vx = 0;
+%         vy = 0; %get_param([bdroot '/Data_Out/vyOut'],'UserData');
+        vz = 0; %get_param([bdroot '/Data_Out/vzOut'],'UserData');
+
         if strcmp(handles.serialStatus,'open') ...
             && strcmp(handles.ftTimerStatus, 'running')
             buffer = strcat('x', num2str_norm(northFb, 5), ...
                             'y', num2str_norm(eastFb, 5), ...
                             'h', num2str_norm(hFb, 5),...
-                            'vx', num2str_norm(vx, 5),...
-                            'vy', num2str_norm(vy, 5),...
-                            'vz', num2str_norm(vz, 5), ...
-                            'fz', num2str_norm(handles.ftData(3) + 26, 5)); % MASS = 26N
+                            'vn', num2str_norm(vx, 5),...
+                            'vi', num2str_norm(vy, 5),...
+                            'vd', num2str_norm(vz, 5), ...
+                            'fz', num2str_norm(handles.ftData(3) + 0, 5)); % MASS = 26N
             
             fprintf(mSerial,'%s', buffer);
         end     
         
         handles.hFb = hFb;
         
-        if size(handles.northFb, 2) > 1000
+        if size(handles.northFb, 2) > 5000
             handles.northFb(1) = [];
         end
-        if size(handles.eastFb, 2) > 1000
+        if size(handles.eastFb, 2) > 5000
             handles.eastFb(1) = [];
         end
         handles.northFb(end+1) = northFb;
@@ -274,7 +286,7 @@ function ftTimerCallback(hObject, eventdata, handles)
             %% %%
     if mSerial.BytesAvailable()>= 42 ...
             && strcmp(handles.fbStatus, 'ready')
-        %bytes = mSerial.BytesAvailable()
+        
         receivedBuffer = fscanf(mSerial, '%s', 42);
         handles.fbStatus = 'none';
         if length(receivedBuffer) >= 42
@@ -502,8 +514,16 @@ function ftTimerCallback(hObject, eventdata, handles)
         plot(handles.grphPos, handles.eastFb,...
             handles.northFb,'-r','LineWidth',1.2) ;
         grid(handles.grphPos, 'on');
-        set(handles.grphPos, 'XLim',[-100, 100]);
-        set(handles.grphPos, 'YLim',[-100, 100]);
+%         xlim = 50;
+%         ylim = 50;
+%         if abs(handles.northFb) > 50 || ...
+%                 abs(handles.eastFb) > 50
+%             set(handles.grphPos, 'XLim',[-100, 100]);
+%             set(handles.grphPos, 'YLim',[-100, 100]);
+%         else
+            set(handles.grphPos, 'XLim',[-30, 30]);
+            set(handles.grphPos, 'YLim',[-30, 30]);
+%         end
         fontSize = 9;
 %         xlabel(handles.grphPos, 'North [m]', 'FontSize', fontSize);
         ylabel(handles.grphPos, 'North [m]', 'FontSize', fontSize);
@@ -886,11 +906,11 @@ else
     
     handles.btnDownSendAtt = 1;
 %     handles.rollSetpoint = str2double(get(hObject.tbxRoll, 'String'));
-    buffer = strcat('a', num2str_norm(handles.rollSetpoint * 100 ,5), ...
-                    'b', num2str_norm(handles.pitchSetpoint * 100, 5),...
-                    'c', num2str_norm(handles.yawSetpoint * 100, 5));
+%     buffer = strcat('a', num2str_norm(handles.rollSetpoint * 100 ,5), ...
+%                     'b', num2str_norm(handles.pitchSetpoint * 100, 5),...
+%                     'c', num2str_norm(handles.yawSetpoint * 100, 5));
 %     disp(num2str(handles.rollSetpoint));
-    fprintf(mSerial,'%s', buffer);
+%     fprintf(mSerial,'%s', buffer);
 end
 guidata(hObject, handles);
 
@@ -978,7 +998,6 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-
 function tbxEastSet_Callback(hObject, eventdata, handles)
 % hObject    handle to tbxEastSet (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -1007,6 +1026,9 @@ function btnSendPos_Callback(hObject, eventdata, handles)
 % hObject    handle to btnSendPos (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
+set(handles.btnSendAttitude,'enable','off');
+
 global mSerial;
 if ~strcmp(handles.serialStatus,'open')
     warndlg('No Connection to vehicle');
@@ -1014,10 +1036,11 @@ else
     handles.btnDownSendPos = 1;
 %     handles.northSetpoint = str2double(get(hObject, 'String'));
 %     handles.eastSetpoint = str2double(get(hObject, 'String'));
-    buffer = strcat('n', num2str_norm(handles.northSetpoint, 5), ...
-        'i', num2str_norm(handles.eastSetpoint, 5), ...
-        'd', num2str_norm(0.9, 5));
-    fprintf(mSerial,'%s', buffer);
+
+%     buffer = strcat('n', num2str_norm(handles.northSetpoint, 5), ...
+%         'i', num2str_norm(handles.eastSetpoint, 5), ...
+%         'd', num2str_norm(0.9, 5));
+%     fprintf(mSerial,'%s', buffer);
 end
 guidata(hObject, handles);
 
@@ -1028,6 +1051,7 @@ function btnSetHome_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 set(handles.tbxNorthSet, 'string', 0);
 set(handles.tbxEastSet, 'string', 0);
+handles.btnDownResetPosControl = 1;
 handles.northSetpoint = 0;
 handles.eastSetpoint = 0;
 guidata(hObject, handles);
@@ -1072,9 +1096,9 @@ function btnConnect_Callback(hObject, eventdata, handles)
         handles.eastFb = 0;
         global mSerial; 
         mSerial = serial('COM8');
-        set(mSerial, 'BaudRate', 57600);
-        mSerial.BytesAvailableFcn = @(handles, eventdata)update_feedback(hObject, ...
-            eventdata);
+        set(mSerial, 'BaudRate', 921600);
+%         mSerial.BytesAvailableFcn = @(handles, eventdata)update_feedback(hObject, ...
+%             eventdata);
 %         mSerial.BytesAvailableFcnCount = 49;
 %         mSerial.BytesAvailableFcnMode = 'byte';
         %guidata(hObject, handles);
@@ -1087,7 +1111,6 @@ function btnConnect_Callback(hObject, eventdata, handles)
             catch
             end
         end
-%         assignin('base','gs_handles',handles)
        
     try
         fopen(mSerial);
