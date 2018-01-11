@@ -22,7 +22,7 @@ function varargout = mGCS2(varargin)
 
 % Edit the above text to modify the response to help mGCS2
 
-% Last Modified by GUIDE v2.5 31-Jul-2017 13:20:16
+% Last Modified by GUIDE v2.5 18-Dec-2017 16:19:16
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -68,28 +68,32 @@ set(handles.btnSync,'visible','off');
 
 handles.serialStatus = 'none';
 
-handles.rollSetpoint = 0;
-handles.pitchSetpoint = 0;
-handles.yawSetpoint = 0;
+handles.rollSetpoint    = 0;
+handles.pitchSetpoint   = 0;
+handles.yawSetpoint     = 0;
 
-handles.northSetpoint = 0;
-handles.eastSetpoint = 0;
+handles.northSetpoint   = 0;
+handles.eastSetpoint    = 0;
+handles.heightSetpoint  = 0;
 
-handles.rollFb = 0;
+handles.rollFb  = 0;
 handles.pitchFb = 0;
-handles.yawFb = 0;
-handles.pFb = 0;
-handles.qFb = 0;
-handles.rFb = 0;
+handles.yawFb   = 0;
+handles.pFb     = 0;
+handles.qFb     = 0;
+handles.rFb     = 0;
 
 handles.northFb = 0;
-handles.eastFb = 0;
-handles.hFb = 0;
+handles.eastFb  = 0;
+handles.downFb  = 0;
+
+handles.k1Pos   = 0;
+handles.k2Pos   = 0;
 
 handles.taskMng = 0;
 handles.plotMng = 0;
 handles.serialMng = 0;
-handles.ftMng = 0;
+handles.ftMng   = 0;
 
 handles.btnDownSendAtt = 0;
 handles.btnDownSendPos = 0;
@@ -110,8 +114,13 @@ global ftSerial;
 handles.ftSerialStatus = 'none';
 handles.ftBuffer = '';
 handles.ftData = zeros(6, 1);
+handles.fbFz = 0;
 handles.ftStatus = 'none';
 handles.ftTimerStatus = 'none';
+handles.prevTic = 0;
+handles.fbFz_filtered = 0;
+% fileID = fopen('fbFz.txt','w');
+% fclose(fileID);  
 
 handles.fbStatus = 'none';
 
@@ -144,7 +153,7 @@ function ftTimerCallback(hObject, eventdata, handles)
         %%
     handles.ftMng = handles.ftMng + 1;
     
-    if (handles.ftMng == 2)
+    if (handles.ftMng == 1)
         if strcmp(handles.ftSerialStatus, 'open')
             if strcmp(handles.ftStatus, 'none') ...
                     && strcmp(handles.ftTimerStatus, 'running')
@@ -195,30 +204,51 @@ function ftTimerCallback(hObject, eventdata, handles)
                             commaPtr(comma)+1 : ftBuffLen));
     %                     guidata(hObject, handles);
                         handles.ftData(1) = handles.ftData(1) / 160.0;
-                        handles.ftData(2) = -handles.ftData(2) / 160.0;
+                        handles.ftData(2) = handles.ftData(2) / 160.0;
                         handles.ftData(3) = - handles.ftData(3) / 160.0;
                         handles.ftData(4) = handles.ftData(4) / 3200.0;
                         handles.ftData(5) = -handles.ftData(5) / 3200.0;
                         handles.ftData(6) = -handles.ftData(6) / 3200.0;
-                        handles.ftData(3) = handles.ftData(3)- 12.5;
-                        fckingData = handles.ftData(3);
-                        fckingData
+%                         handles.ftData(1) = handles.ftData(1)- 9.7;
+%                         handles.ftData(2) = handles.ftData(2)- 6.0;
+                        fbFz = handles.ftData(3)- 14;
+%                         fckingData1 = handles.ftData(1);
+%                         fckingData2 = handles.ftData(2);
+                        
+%                         fileID = fopen('fbFz.txt','a');
+                                          
+%                         if handles.prevTic == 1
+%                             toc
+%                         end
+%                         tic
+%                         handles.prevTic = 1;
+                        
+                        alpha = 0; % no filter % cut-off freq = 1.5Hz, sapling time = 0.1s;
+                        fbFz_filtered = handles.fbFz_filtered;
+                        fbFz_filtered = alpha * fbFz_filtered + ...
+                                                    (1-alpha) * fbFz;
+                          handles.fbFz_filtered = fbFz_filtered;                      
+%                         fprintf(fileID, strcat(num2str(fbFz), '\t', ...
+%                                 num2str(handles.fbFz_filtered), '\n'));
+%                         fclose(fileID);
+%                         assignin('base','fbFz',handles.fbFz);
+%                         fckingData
                     end  
                 end
             end        
         end
+
+%             buffer = strcat('fz', num2str_norm(handles.fbFz_filtered * 100, 5)); %, ...
+% %                             'k', '1', num2str_norm(handles.ftData(1)*100, 5), ... 
+% %                             'k','2', num2str_norm(handles.ftData(2)*100, 5));
+%             fprintf(mSerial,'%s', buffer);
+        
         handles.ftMng = 0;
     end
     elseif(handles.taskMng == 2)
+%     if(handles.taskMng == 2)
     %%
-        set_param([bdroot '/Fzin'],'Gain', num2str(handles.ftData(3)));
-        set_param([bdroot '/rollin'],'Gain', num2str(handles.rollFb));
-        set_param([bdroot '/pitchin'],'Gain', num2str(handles.pitchFb));
-        set_param([bdroot '/yawin'],'Gain', num2str(handles.yawFb));
-        set_param([bdroot '/pin'],'Gain', num2str(handles.pFb));
-        set_param([bdroot '/qin'],'Gain', num2str(handles.qFb));
-        set_param([bdroot '/rin'],'Gain', num2str(handles.rFb));
-    
+    %%
         fprintf(mSerial,'%s', 's');        
         handles.fbStatus = 'ready';
         
@@ -239,38 +269,27 @@ function ftTimerCallback(hObject, eventdata, handles)
         if handles.btnDownSendPos == 1
             buffer = strcat('l', num2str_norm(handles.northSetpoint, 5), ...
                 'i', num2str_norm(handles.eastSetpoint, 5), ...
-                'd', num2str_norm(0.9, 5));
+                'd', num2str_norm(handles.heightSetpoint, 5), ...
+                'k', '1', num2str_norm(handles.k1Pos*100, 5), ... 
+                'k','2', num2str_norm(handles.k2Pos*100, 5));
+%             buffer = strcat('l', num2str_norm(handles.northSetpoint, 5), ...
+%                 'i', num2str_norm(handles.eastSetpoint, 5), ...
+%                 'd', num2str_norm(handles.heightSetpoint, 5));
             fprintf(mSerial,'%s', buffer);
             handles.btnDownSendPos = 0;
         end
     %%
     elseif (handles.taskMng == 3)
-        
-        northFb = get_param([bdroot '/Data_Out/xOut'],'UserData');
-        eastFb  = get_param([bdroot '/Data_Out/yOut'],'UserData');
-        hFb     = 0; %get_param([bdroot '/Data_Out/zOut'],'UserData');      
-        
-        vx = get_param([bdroot '/Data_Out/vxOut'],'UserData');
-        vy = get_param([bdroot '/Data_Out/vyOut'],'UserData');
-%         vz = get_param([bdroot '/Data_Out/vzOut'],'UserData');
-%         vx = 0;
-%         vy = 0; %get_param([bdroot '/Data_Out/vyOut'],'UserData');
-        vz = 0; %get_param([bdroot '/Data_Out/vzOut'],'UserData');
-
         if strcmp(handles.serialStatus,'open') ...
             && strcmp(handles.ftTimerStatus, 'running')
-            buffer = strcat('x', num2str_norm(northFb, 5), ...
-                            'y', num2str_norm(eastFb, 5), ...
-                            'h', num2str_norm(hFb, 5),...
-                            'vn', num2str_norm(vx, 5),...
-                            'vi', num2str_norm(vy, 5),...
-                            'vd', num2str_norm(vz, 5), ...
-                            'fz', num2str_norm(handles.ftData(3) + 0, 5)); % MASS = 26N
-            
+        
+            buffer = strcat('fz', num2str_norm(handles.fbFz_filtered * 100, 5)); %, ...
+%                             'k', '1', num2str_norm(handles.ftData(1)*100, 5), ... 
+%                             'k','2', num2str_norm(handles.ftData(2)*100, 5));
             fprintf(mSerial,'%s', buffer);
         end     
         
-        handles.hFb = hFb;
+%         handles.hFb = hFb;
         
         if size(handles.northFb, 2) > 5000
             handles.northFb(1) = [];
@@ -278,9 +297,11 @@ function ftTimerCallback(hObject, eventdata, handles)
         if size(handles.eastFb, 2) > 5000
             handles.eastFb(1) = [];
         end
-        handles.northFb(end+1) = northFb;
-        handles.eastFb(end+1) = eastFb; 
-    
+%         handles.northFb(end+1) = northFb;
+%         handles.eastFb(end+1) = eastFb; 
+        handles.northFb(end+1) = handles.pFb;
+        handles.eastFb(end+1) = handles.qFb; 
+        handles.downFb(end+1) = handles.rFb; 
     elseif (handles.taskMng == 4)
         
             %% %%
@@ -509,300 +530,22 @@ function ftTimerCallback(hObject, eventdata, handles)
         try
         set(handles.tbxNorthFb, 'String', num2str(handles.northFb(end)));
         set(handles.tbxEastFb, 'String', num2str(handles.eastFb(end)));
-
-%         axes(handles.grphPos);
+        set(handles.tbxDownFb, 'String', num2str(handles.downFb(end)));
         plot(handles.grphPos, handles.eastFb,...
             handles.northFb,'-r','LineWidth',1.2) ;
+        
         grid(handles.grphPos, 'on');
-%         xlim = 50;
-%         ylim = 50;
-%         if abs(handles.northFb) > 50 || ...
-%                 abs(handles.eastFb) > 50
-%             set(handles.grphPos, 'XLim',[-100, 100]);
-%             set(handles.grphPos, 'YLim',[-100, 100]);
-%         else
             set(handles.grphPos, 'XLim',[-30, 30]);
             set(handles.grphPos, 'YLim',[-30, 30]);
-%         end
         fontSize = 9;
-%         xlabel(handles.grphPos, 'North [m]', 'FontSize', fontSize);
+        
         ylabel(handles.grphPos, 'North [m]', 'FontSize', fontSize);
         catch
         end
         handles.plotMng = 0;
     end
-    %% %%
-    
-    
-    %% %%
-    
     %% 
     guidata(mhObject, handles);
-    
-%
-function timerCallback(hObject, eventdata, handles)
-    handles = guidata(handles.figure1);
-%     try
-%         set_param([bdroot '/Fzin'],'Gain', num2str(handles.ftData(3)));
-%         set_param([bdroot '/rollin'],'Gain', num2str(handles.rollFb));
-%         set_param([bdroot '/pitchin'],'Gain', num2str(handles.pitchFb));
-%         set_param([bdroot '/yawin'],'Gain', num2str(handles.yawFb));
-%         set_param([bdroot '/pin'],'Gain', num2str(handles.pFb));
-%         set_param([bdroot '/qin'],'Gain', num2str(handles.qFb));
-%         set_param([bdroot '/rin'],'Gain', num2str(handles.rFb));
-%     catch
-%     end
-%     
-% %     status = get_param(bdroot,'simulationstatus');
-% %     if strcmp(status,'running')
-%     try
-        northFb = get_param([bdroot '/Data_Out/xOut'],'UserData');
-        eastFb  = get_param([bdroot '/Data_Out/yOut'],'UserData');
-        hFb     = get_param([bdroot '/Data_Out/zOut'],'UserData');      
-
-%     catch
-%     end
-    
-    global mSerial;
-    if strcmp(handles.serialStatus,'open') ...
-        && strcmp(handles.timerStatus, 'running')
-        buffer = strcat('x', num2str_norm(northFb, 5), ...
-            'y', num2str_norm(eastFb, 5), 'h', num2str_norm(hFb, 5), 'f');
-        fprintf(mSerial,'%s', buffer);
-        handles.fbStatus = 'ready';
-    end
-    
-    set(handles.tbxNorthFb, 'String', num2str(northFb));
-        set(handles.tbxEastFb, 'String', num2str(eastFb));
-        
-    if size(handles.northFb, 2) > 500
-        handles.northFb(1) = [];
-    end
-    if size(handles.eastFb, 2) > 500
-        handles.eastFb(1) = [];
-    end
-    handles.northFb(end+1) = northFb;
-    handles.eastFb(end+1) = eastFb; 
-    
-    axes(handles.grphPos);
-    plot(handles.grphPos, handles.northFb,handles.eastFb,'--r','LineWidth',1.2);
-    handles.hFb = hFb; 
-    
-    %% %%
-    if mSerial.BytesAvailable()...
-            && strcmp(handles.fbStatus, 'ready')
-        receivedBuffer = fscanf(mSerial, '%s', 49);
-        handles.fbStatus = 'none';
-        i = 1;
-        while i<8
-            flag = receivedBuffer(i);
-            if strcmp(flag, 'a')
-                rollFb = str2double(receivedBuffer(i+1:i+6))/100.0;
-                if strcmp(receivedBuffer(i+7), 'b')...
-                        && strcmp(receivedBuffer(i+14), 'c')...
-                        && strcmp(receivedBuffer(i+21), 'p')...
-                        && strcmp(receivedBuffer(i+28), 'q')...
-                        && strcmp(receivedBuffer(i+35), 'r')
-
-                    pitchFb = str2double(receivedBuffer(i+8:i+13))/100.0;
-                    yawFb = str2double(receivedBuffer(i+15:i+20))/100.0;
-                    pFb = str2double(receivedBuffer(i+22:i+27))/100.0;
-                    qFb = str2double(receivedBuffer(i+29:i+34))/100.0;
-                    rFb = str2double(receivedBuffer(i+36:i+41))/100.0;
-
-                    if ~isnan(rollFb)
-                        handles.rollFb = rollFb;
-                    end
-                    if ~isnan(pitchFb)
-                        handles.pitchFb = pitchFb;
-                    end
-                    if ~isnan(yawFb)
-                        handles.yawFb = yawFb;
-                    end
-                    if ~isnan(pFb)
-                        handles.pFb = pFb;
-                    end
-                    if ~isnan(qFb)
-                        handles.qFb = qFb;
-                    end
-                    if ~isnan(rFb)
-                        handles.rFb = rFb;
-                    end
-                end
-                i = i + 42;
-            elseif  strcmp(flag, 'b')
-                    if strcmp(receivedBuffer(i+7), 'c')...
-                            && strcmp(receivedBuffer(i+14), 'p')...
-                            && strcmp(receivedBuffer(i+21), 'q')...
-                            && strcmp(receivedBuffer(i+28), 'r')...
-                            && strcmp(receivedBuffer(i+35), 'a')
-                        pitchFb = str2double(receivedBuffer(i+1:i+6))/100.0;
-                        yawFb = str2double(receivedBuffer(i+8:i+13))/100.0;
-                        pFb = str2double(receivedBuffer(i+15:i+20))/100.0;
-                        qFb = str2double(receivedBuffer(i+22:i+27))/100.0;
-                        rFb = str2double(receivedBuffer(i+29:i+34))/100.0;
-                        rollFb = str2double(receivedBuffer(i+36:i+41))/100.0;
-                        if ~isnan(rollFb)
-                        handles.rollFb = rollFb;
-                        end
-                        if ~isnan(pitchFb)
-                            handles.pitchFb = pitchFb;
-                        end
-                        if ~isnan(yawFb)
-                            handles.yawFb = yawFb;
-                        end
-                        if ~isnan(pFb)
-                            handles.pFb = pFb;
-                        end
-                        if ~isnan(qFb)
-                            handles.qFb = qFb;
-                        end
-                        if ~isnan(rFb)
-                            handles.rFb = rFb;
-                        end
-                    end
-                    i = i + 42;
-                elseif strcmp(flag, 'c')
-                        if strcmp(receivedBuffer(i+7), 'p')...
-                            && strcmp(receivedBuffer(i+14), 'q')...
-                            && strcmp(receivedBuffer(i+21), 'r')...
-                            && strcmp(receivedBuffer(i+28), 'a')...
-                            && strcmp(receivedBuffer(i+35), 'b')
-                            yawFb = str2double(receivedBuffer(i+1:i+6))/100.0;
-                            pFb = str2double(receivedBuffer(i+8:i+13))/100.0;
-                            qFb = str2double(receivedBuffer(i+15:i+20))/100.0;
-                            rFb = str2double(receivedBuffer(i+22:i+27))/100.0;
-                            rollFb = str2double(receivedBuffer(i+29:i+34))/100.0;
-                            pitchFb = str2double(receivedBuffer(i+36:i+41))/100.0;
-                            if ~isnan(rollFb)
-                                handles.rollFb = rollFb;
-                            end
-                            if ~isnan(pitchFb)
-                                handles.pitchFb = pitchFb;
-                            end
-                            if ~isnan(yawFb)
-                                handles.yawFb = yawFb;
-                            end
-                            if ~isnan(pFb)
-                                handles.pFb = pFb;
-                            end
-                            if ~isnan(qFb)
-                                handles.qFb = qFb;
-                            end
-                            if ~isnan(rFb)
-                                handles.rFb = rFb;
-                            end
-                        end
-                        i = i + 42;
-                    elseif strcmp(flag, 'p')
-                            if strcmp(receivedBuffer(i+7), 'q')...
-                                && strcmp(receivedBuffer(i+14), 'r')...
-                                && strcmp(receivedBuffer(i+21), 'a')...
-                                && strcmp(receivedBuffer(i+28), 'b')...
-                                && strcmp(receivedBuffer(i+35), 'c')
-                                pFb = str2double(receivedBuffer(i+1:i+6))/100.0;
-                                qFb = str2double(receivedBuffer(i+8:i+13))/100.0;
-                                rFb = str2double(receivedBuffer(i+15:i+20))/100.0;
-                                rollFb = str2double(receivedBuffer(i+22:i+27))/100.0;
-                                pitchFb = str2double(receivedBuffer(i+29:i+34))/100.0;
-                                yawFb = str2double(receivedBuffer(i+36:i+41))/100.0;  
-                                if ~isnan(rollFb)
-                                    handles.rollFb = rollFb;
-                                end
-                                if ~isnan(pitchFb)
-                                    handles.pitchFb = pitchFb;
-                                end
-                                if ~isnan(yawFb)
-                                    handles.yawFb = yawFb;
-                                end
-                                if ~isnan(pFb)
-                                    handles.pFb = pFb;
-                                end
-                                if ~isnan(qFb)
-                                    handles.qFb = qFb;
-                                end
-                                if ~isnan(rFb)
-                                    handles.rFb = rFb;
-                                end
-                            end
-                            i = i + 42;
-                        elseif strcmp(flag, 'q')
-                                if strcmp(receivedBuffer(i+7), 'r')...
-                                    && strcmp(receivedBuffer(i+14), 'a')...
-                                    && strcmp(receivedBuffer(i+21), 'b')...
-                                    && strcmp(receivedBuffer(i+28), 'c')...
-                                    && strcmp(receivedBuffer(i+35), 'p')
-                                    qFb = str2double(receivedBuffer(i+1:i+6))/100.0;
-                                    rFb = str2double(receivedBuffer(i+8:i+13))/100.0;
-                                    rollFb = str2double(receivedBuffer(i+15:i+20))/100.0;
-                                    pitchFb = str2double(receivedBuffer(i+22:i+27))/100.0;
-                                    yawFb = str2double(receivedBuffer(i+29:i+34))/100.0;
-                                    pFb = str2double(receivedBuffer(i+36:i+41))/100.0;
-                                    if ~isnan(rollFb)
-                                        handles.rollFb = rollFb;
-                                    end
-                                    if ~isnan(pitchFb)
-                                        handles.pitchFb = pitchFb;
-                                    end
-                                    if ~isnan(yawFb)
-                                        handles.yawFb = yawFb;
-                                    end
-                                    if ~isnan(pFb)
-                                        handles.pFb = pFb;
-                                    end
-                                    if ~isnan(qFb)
-                                        handles.qFb = qFb;
-                                    end
-                                    if ~isnan(rFb)
-                                        handles.rFb = rFb;
-                                    end
-                                end
-                            i = i + 42;
-                            elseif strcmp(flag, 'r')
-                                    if strcmp(receivedBuffer(i+7), 'a')...
-                                        && strcmp(receivedBuffer(i+14), 'b')...
-                                        && strcmp(receivedBuffer(i+21), 'c')...
-                                        && strcmp(receivedBuffer(i+28), 'p')...
-                                        && strcmp(receivedBuffer(i+35), 'q')
-                                        rFb = str2double(receivedBuffer(i+1:i+6))/100.0;
-                                        rollFb = str2double(receivedBuffer(i+8:i+13))/100.0;
-                                        pitchFb = str2double(receivedBuffer(i+15:i+20))/100.0;
-                                        yawFb = str2double(receivedBuffer(i+22:i+27))/100.0;
-                                        pFb = str2double(receivedBuffer(i+29:i+34))/100.0;
-                                        qFb = str2double(receivedBuffer(i+36:i+41))/100.0;
-                                        if ~isnan(rollFb)
-                                            handles.rollFb = rollFb;
-                                        end
-                                        if ~isnan(pitchFb)
-                                            handles.pitchFb = pitchFb;
-                                        end
-                                        if ~isnan(yawFb)
-                                            handles.yawFb = yawFb;
-                                        end
-                                        if ~isnan(pFb)
-                                            handles.pFb = pFb;
-                                        end
-                                        if ~isnan(qFb)
-                                            handles.qFb = qFb;
-                                        end
-                                        if ~isnan(rFb)
-                                            handles.rFb = rFb;
-                                        end
-                                    end
-                                i = i + 42;
-            else
-                i = i+1;
-            end
-        end
-    end
-        set(handles.tbxRollFb, 'string', handles.rollFb);
-        set(handles.tbxPitchFb, 'string', handles.pitchFb);
-        set(handles.tbxYawFb, 'string', handles.yawFb);
-    
-    %% %%
-% %         set_param(bdroot, 'SimulationCommand', 'Update')
-% %     end
-    guidata(handles.figure1, handles);
         
 
 % --- Outputs from this function are returned to the command line.
@@ -835,12 +578,6 @@ guidata(hObject, handles);
 
 % --- Executes during object creation, after setting all properties.
 function tbxRoll_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to tbxRoll (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
@@ -905,12 +642,6 @@ if ~strcmp(handles.serialStatus,'open')
 else
     
     handles.btnDownSendAtt = 1;
-%     handles.rollSetpoint = str2double(get(hObject.tbxRoll, 'String'));
-%     buffer = strcat('a', num2str_norm(handles.rollSetpoint * 100 ,5), ...
-%                     'b', num2str_norm(handles.pitchSetpoint * 100, 5),...
-%                     'c', num2str_norm(handles.yawSetpoint * 100, 5));
-%     disp(num2str(handles.rollSetpoint));
-%     fprintf(mSerial,'%s', buffer);
 end
 guidata(hObject, handles);
 
@@ -1094,23 +825,15 @@ function btnConnect_Callback(hObject, eventdata, handles)
         cla(handles.grphPos);
         handles.northFb = 0;
         handles.eastFb = 0;
+        handles.downFb = 0;
         global mSerial; 
         mSerial = serial('COM8');
-        set(mSerial, 'BaudRate', 921600);
+        set(mSerial, 'BaudRate', 57600);
 %         mSerial.BytesAvailableFcn = @(handles, eventdata)update_feedback(hObject, ...
 %             eventdata);
 %         mSerial.BytesAvailableFcnCount = 49;
 %         mSerial.BytesAvailableFcnMode = 'byte';
         %guidata(hObject, handles);
-
-        status = get_param(bdroot,'simulationstatus');
-        if strcmp(status,'stopped')
-            try
-                set_param(bdroot,'simulationcommand','start');
-                set_param([bdroot '/kickoff'],'Value', num2str(0));
-            catch
-            end
-        end
        
     try
         fopen(mSerial);
@@ -1124,19 +847,11 @@ function btnConnect_Callback(hObject, eventdata, handles)
         handles.serialStatus = 'closed';
         set(handles.btnConnect,'visible','on');
         set(handles.btnDisconnect,'visible','off');
-        
-        status = get_param(bdroot,'simulationstatus');
-        if strcmp(status,'running') 
-            try
-                set_param(bdroot, 'SimulationCommand', 'Stop');
-            catch
-            end
-        end
     end
     
     % FT controller
     global ftSerial;
-    ftSerial = serial('COM7');
+    ftSerial = serial('COM9');
     set(ftSerial, 'BaudRate', 9600);
     set(ftSerial, 'FlowControl', 'software');
     try 
@@ -1157,12 +872,6 @@ function btnConnect_Callback(hObject, eventdata, handles)
     
 function update_feedback(hObject,eventdata)
     handles = guidata(hObject);
-%     rollFb  = 0;
-%     pitchFb = 0;
-%     yawFb   = 0;
-%     pFb     = 0;
-%     qFb     = 0;
-%     rFb     = 0;
 %% %% Get DOWN
     handles.serialMng = handles.serialMng + 1;
     global mSerial;
@@ -1374,65 +1083,7 @@ function update_feedback(hObject,eventdata)
         set(handles.tbxRollFb, 'string', handles.rollFb);
         set(handles.tbxPitchFb, 'string', handles.pitchFb);
         set(handles.tbxYawFb, 'string', handles.yawFb);
-%% %% getUP
-
-%     flag = fscanf(mSerial, '%s',1);
-%     while ~(strcmp(flag, 'a')||strcmp(flag, 'b')||strcmp(flag, 'c')||...
-%             strcmp(flag, 'p')||strcmp(flag, 'q')||strcmp(flag, 'r'))
-%         flag = fscanf(mSerial, '%s',1);
-%     end
-%     if strcmp(flag, 'a')
-%         receivedBuffer = fscanf(mSerial, '%s',6)
-%         handles.rollFb = str2double(receivedBuffer)/100.0;
-%     elseif  strcmp(flag, 'b')
-%             receivedBuffer = fscanf(mSerial, '%s',6)
-%             handles.pitchFb = str2double(receivedBuffer)/100.0;
-%         elseif strcmp(flag, 'c')
-%             receivedBuffer = fscanf(mSerial, '%s',6);
-%             handles.yawFb = str2double(receivedBuffer)/100.0;
-%             elseif strcmp(flag, 'p')
-%                 receivedBuffer = fscanf(mSerial, '%s',6);
-%                 handles.pFb = str2double(receivedBuffer)/100.0;
-%                 elseif strcmp(flag, 'q')
-%                     receivedBuffer = fscanf(mSerial, '%s',6);
-%                     handles.qFb = str2double(receivedBuffer)/100.0;
-%                     elseif strcmp(flag, 'r')
-%                         receivedBuffer = fscanf(mSerial, '%s',6);
-%                         handles.rFb = str2double(receivedBuffer)/100.0;
-%     end
-
-
-%     count = 1;
-%     while (~strcmp(flag, 'a'))...
-%             && count < 42
-%         flag = fscanf(mSerial, '%s',1);
-%     end
-%     receivedBuffer = fscanf(mSerial, '%s',41);
-
-
-
-%     if  strcmp(flag, 'a')
-%         receivedBuffer = fscanf(mSerial, '%s',41);
-%         handles.receivedBuffer = receivedBuffer;
-% 
-%         if (strcmp(receivedBuffer(7), 'b') && strcmp(receivedBuffer(14), 'c') ...
-%                 && strcmp(receivedBuffer(21), 'p') && strcmp(receivedBuffer(28), 'q') ...
-%                 && strcmp(receivedBuffer(35), 'r'))
-% 
-%             handles.rollFb = str2double(receivedBuffer(1:6))/100.0;
-%             handles.pitchFb = str2double(receivedBuffer(8:13))/100.0;
-%             handles.yawFb = str2double(receivedBuffer(15:20))/100.0;
-%             handles.pFb = str2double(receivedBuffer(22:27))/100.0;
-%             handles.qFb = str2double(receivedBuffer(29:34))/100.0;
-%             handles.rFb = str2double(receivedBuffer(36:41))/100.0;
-%             guidata(handles.figure1, handles);
-%         else
-%             %do nothing
-%         end
-%         set(handles.tbxRollFb, 'string', handles.rollFb);
-%         set(handles.tbxPitchFb, 'string', handles.pitchFb);
-%         set(handles.tbxYawFb, 'string', handles.yawFb);
-%     end
+        
     guidata(hObject, handles);
 
     
@@ -1470,16 +1121,6 @@ function btnDisconnect_Callback(hObject, eventdata, handles)
         delete(mSerial); 
     end
     handles.serialStatus = 'none';
-    
-    status = get_param(bdroot,'simulationstatus');
-    if strcmp(status,'running')...
-            && ~strcmp(handles.timerStatus, 'running')
-        try
-            set_param(bdroot, 'SimulationCommand', 'Stop')
-        catch 
-        end
-    end
-
 
     global ftSerial;
     if strcmp(handles.ftSerialStatus, 'open')...
@@ -1609,14 +1250,6 @@ global ftTimer;
     %     end
     delete(ftSerial); 
     handles.ftSerialStatus = 'none';
-    
-    status = get_param(bdroot,'simulationstatus');
-    if strcmp(status,'running') 
-        try
-            set_param(bdroot, 'SimulationCommand', 'Stop')
-        catch
-        end
-    end
 
     guidata(hObject, handles);
 
@@ -1627,23 +1260,104 @@ function btnSync_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-try
-    set_param([bdroot '/kickoff'],'Value', num2str(1));
-catch 
-end
-
 % FT controller
 global ftTimer;
 if ~strcmp(handles.ftTimerStatus, 'running')
     start(ftTimer);
 end
 handles.ftTimerStatus = 'running';
-
-% global mTimer;
-% if strcmp(handles.timerStatus, 'stopped')
-%     start(mTimer);
-%     handles.timerStatus = 'running';
-% end
-
 guidata(hObject, handles);
 
+
+
+
+function tbxHeightSet_Callback(hObject, eventdata, handles)
+% hObject    handle to tbxHeightSet (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of tbxHeightSet as text
+%        str2double(get(hObject,'String')) returns contents of tbxHeightSet as a double
+handles.heightSetpoint = str2double(get(hObject, 'String'));
+guidata(hObject, handles);
+
+% --- Executes during object creation, after setting all properties.
+function tbxHeightSet_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to tbxHeightSet (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function tbxK2Pos_Callback(hObject, eventdata, handles)
+% hObject    handle to tbxK2Pos (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of tbxK2Pos as text
+handles.k2Pos = str2double(get(hObject,'String')); %returns contents of tbxK2Pos as a double
+guidata(hObject, handles);
+
+% --- Executes during object creation, after setting all properties.
+function tbxK2Pos_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to tbxK2Pos (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function tbxK1Pos_Callback(hObject, eventdata, handles)
+% hObject    handle to tbxK1Pos (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of tbxK1Pos as text
+handles.k1Pos = str2double(get(hObject,'String')); % returns contents of tbxK1Pos as a double
+guidata(hObject, handles);
+
+% --- Executes during object creation, after setting all properties.
+function tbxK1Pos_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to tbxK1Pos (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function tbxDownFb_Callback(hObject, eventdata, handles)
+% hObject    handle to tbxDownFb (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of tbxDownFb as text
+%        str2double(get(hObject,'String')) returns contents of tbxDownFb as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function tbxDownFb_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to tbxDownFb (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
